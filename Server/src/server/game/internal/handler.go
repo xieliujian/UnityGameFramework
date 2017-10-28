@@ -24,7 +24,7 @@ func handletosChat(args []interface{}){
 
 	// 输出收到的消息的内容
 	fmt.Println(m.Name)
-
+	
 	//给发送者回应一个 Hello 消息
 	a.WriteMsg(&msg.TocChat{
 		Name : m.Name,
