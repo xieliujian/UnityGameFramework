@@ -95,6 +95,9 @@ namespace Net
         /// </summary>
         public void SendMessage(IMessage obj)
         {
+            if (!mSocketClient.IsConnected())
+                return;
+
             if (!ProtoDic.ContainProtoType(obj.GetType()))
             {
                 Debug.LogError("不存协议类型");

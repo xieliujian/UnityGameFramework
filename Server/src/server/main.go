@@ -19,6 +19,5 @@ func main() {
 	leaf.Run(
 		game.Module,
 		gate.Module,
-		login.Module,
-	)
+		login.Module)
 }

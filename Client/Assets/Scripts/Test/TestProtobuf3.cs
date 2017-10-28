@@ -51,8 +51,4 @@ public class TestProtobuf3 : MonoBehaviour
     }
 
     #endregion
-
-    #region 函数
-
-    #endregion
 }

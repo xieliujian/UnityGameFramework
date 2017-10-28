@@ -305,5 +305,14 @@ public class SocketClient
         buffer.Close();
     }
 
+    /// <summary>
+    /// 是否连接
+    /// </summary>
+    /// <returns></returns>
+    public bool IsConnected()
+    {
+        return (mClient != null && mClient.Connected);
+    }
+
     #endregion
 }
