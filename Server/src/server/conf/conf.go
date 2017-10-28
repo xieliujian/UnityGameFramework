@@ -14,7 +14,7 @@ var (
 	MaxMsgLen       uint32 = 4096
 	HTTPTimeout            = 10 * time.Second
 	LenMsgLen              = 2
-	LittleEndian           = false
+	LittleEndian           = true
 
 	// skeleton conf
 	GoLen              = 10000
