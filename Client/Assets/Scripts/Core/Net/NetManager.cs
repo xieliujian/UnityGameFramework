@@ -13,7 +13,11 @@ namespace Net
     public class NetManager : SingletonMonoBehaviour<NetManager>
     {
         private Dictionary<Type, TocHandler> _handlerDic;
+
         private SocketClient _socketClient;
+
+        private static Queue<KeyValuePair<Type, object>> sEvents = new Queue<KeyValuePair<Type, object>>();
+
         SocketClient socketClient
         {
             get
@@ -22,6 +26,7 @@ namespace Net
                 {
                     _socketClient = new SocketClient();
                 }
+
                 return _socketClient;
             }
         }
@@ -29,6 +34,24 @@ namespace Net
         void Start()
         {
             Init();
+        }
+
+        /// <summary>
+        /// 交给Command，这里不想关心发给谁。
+        /// </summary>
+        void Update()
+        {
+            if (sEvents.Count > 0)
+            {
+                while (sEvents.Count > 0)
+                {
+                    KeyValuePair<Type, object> _event = sEvents.Dequeue();
+                    if (_handlerDic.ContainsKey(_event.Key))
+                    {
+                        _handlerDic[_event.Key](_event.Value);
+                    }
+                }
+            }
         }
 
         public void Init()
@@ -71,6 +94,7 @@ namespace Net
                 Debug.LogError("不存协议类型");
                 return;
             }
+
             ByteBuffer buff = new ByteBuffer();
             int protoId = ProtoDic.GetProtoIdByProtoType(obj.GetType());
 
@@ -84,7 +108,6 @@ namespace Net
             UInt16 lengh = (UInt16)(result.Length + 2);
             Debug.Log("lengh" + lengh + ",protoId" + protoId);
             buff.WriteShort((UInt16)lengh);
-
             buff.WriteShort((UInt16)protoId);
             buff.WriteBytes(result);
             SendMessage(buff);
@@ -118,6 +141,7 @@ namespace Net
                 Debug.LogError("未知协议号");
                 return;
             }
+
             Type protoType = ProtoDic.GetProtoTypeByProtoId(protoId);
             try
             {
@@ -129,28 +153,13 @@ namespace Net
             {
                 Debug.Log("DispatchProto Error:" + protoType.ToString());
             }
-
         }
 
-        static Queue<KeyValuePair<Type, object>> sEvents = new Queue<KeyValuePair<Type, object>>();
         /// <summary>
-        /// 交给Command，这里不想关心发给谁。
+        /// 增加消息回调
         /// </summary>
-        void Update()
-        {
-            if (sEvents.Count > 0)
-            {
-                while (sEvents.Count > 0)
-                {
-                    KeyValuePair<Type, object> _event = sEvents.Dequeue();
-                    if (_handlerDic.ContainsKey(_event.Key))
-                    {
-                        _handlerDic[_event.Key](_event.Value);
-                    }
-                }
-            }
-        }
-
+        /// <param name="type"></param>
+        /// <param name="handler"></param>
         public void AddHandler(Type type, TocHandler handler)
         {
             if (_handlerDic.ContainsKey(type))

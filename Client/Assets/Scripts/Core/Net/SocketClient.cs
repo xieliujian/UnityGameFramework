@@ -7,14 +7,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Net;
 
-public enum DisType
-{
-    Exception,
-    Disconnect,
-}
-
 public class SocketClient
 {
+    public enum DisType
+    {
+        Exception,
+        Disconnect,
+    }
+
     private TcpClient client = null;
     private NetworkStream outStream = null;
     private MemoryStream memStream;
@@ -42,7 +42,7 @@ public class SocketClient
     /// </summary>
     public void OnRemove()
     {
-        this.Close();
+        Close();
         reader.Close();
         memStream.Close();
     }
@@ -57,6 +57,7 @@ public class SocketClient
         client.SendTimeout = 1000;
         client.ReceiveTimeout = 1000;
         client.NoDelay = true;
+
         try
         {
             client.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
@@ -74,7 +75,7 @@ public class SocketClient
     void OnConnect(IAsyncResult asr)
     {
         outStream = client.GetStream();
-        client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
+        outStream.BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
         NetManager.Instance.OnConnect();
     }
 
@@ -111,17 +112,24 @@ public class SocketClient
         try
         {
             lock (client.GetStream())
-            {         //读取字节流到缓冲区
+            {       
+                //读取字节流到缓冲区
                 bytesRead = client.GetStream().EndRead(asr);
             }
+
             if (bytesRead < 1)
-            {                //包尺寸有问题，断线处理
+            {       
+                //包尺寸有问题，断线处理
                 OnDisconnected(DisType.Disconnect, "bytesRead < 1");
                 return;
             }
-            OnReceive(byteBuffer, bytesRead);   //分析数据包内容，抛给逻辑层
+
+            //分析数据包内容，抛给逻辑层
+            OnReceive(byteBuffer, bytesRead);
+
             lock (client.GetStream())
-            {         //分析完，再次监听服务器发过来的新消息
+            {         
+                //分析完，再次监听服务器发过来的新消息
                 Array.Clear(byteBuffer, 0, byteBuffer.Length);   //清空数组
                 client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
             }
@@ -179,6 +187,7 @@ public class SocketClient
     {
         memStream.Seek(0, SeekOrigin.End);
         memStream.Write(bytes, 0, length);
+
         //Reset to beginning
         memStream.Seek(0, SeekOrigin.Begin);
         while (RemainingBytes() > 2)
@@ -198,6 +207,7 @@ public class SocketClient
                 break;
             }
         }
+
         byte[] leftover = reader.ReadBytes((int)RemainingBytes());
         memStream.SetLength(0);
         memStream.Write(leftover, 0, leftover.Length);
@@ -225,7 +235,6 @@ public class SocketClient
         byte[] pbData = buffer.ReadBytes(pbDataLen);
         NetManager.Instance.DispatchProto(mainId, pbData);
     }
-
 
     /// <summary>
     /// 会话发送

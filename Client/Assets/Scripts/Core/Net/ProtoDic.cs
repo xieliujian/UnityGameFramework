@@ -8,7 +8,7 @@ namespace Proto
 {
     public class ProtoDic
     {
-        private static List<int> _protoId = new List<int>
+       private static List<int> _protoId = new List<int>
        {
             0,
             1,
@@ -22,7 +22,7 @@ namespace Proto
             9,
         };
 
-        private static List<Type> _protoType = new List<Type>
+      private static List<Type> _protoType = new List<Type>
       {
             typeof(StartFight),
             typeof(FightResult),
@@ -35,8 +35,8 @@ namespace Proto
             typeof(LoginSuccessfull),
             typeof(LoginFaild),
        };
-
-        private static readonly Dictionary<RuntimeTypeHandle, MessageParser> Parsers = new Dictionary<RuntimeTypeHandle, MessageParser>()
+    
+       private static readonly Dictionary<RuntimeTypeHandle, MessageParser> Parsers = new Dictionary<RuntimeTypeHandle, MessageParser>()
        {
             {typeof(StartFight).TypeHandle,StartFight.Parser },
             {typeof(FightResult).TypeHandle,FightResult.Parser },
