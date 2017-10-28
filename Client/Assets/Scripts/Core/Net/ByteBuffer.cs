@@ -8,119 +8,125 @@ namespace Net
 {
     public class ByteBuffer
     {
-        MemoryStream stream = null;
-        BinaryWriter writer = null;
-        BinaryReader reader = null;
+        #region 变量
+
+        MemoryStream mStream = null;
+        BinaryWriter mWriter = null;
+        BinaryReader mReader = null;
+
+        #endregion
+
+        #region 函数
 
         public ByteBuffer()
         {
-            stream = new MemoryStream();
-            writer = new BinaryWriter(stream);
+            mStream = new MemoryStream();
+            mWriter = new BinaryWriter(mStream);
         }
 
         public ByteBuffer(byte[] data)
         {
             if (data != null)
             {
-                stream = new MemoryStream(data);
-                reader = new BinaryReader(stream);
+                mStream = new MemoryStream(data);
+                mReader = new BinaryReader(mStream);
             }
             else
             {
-                stream = new MemoryStream();
-                writer = new BinaryWriter(stream);
+                mStream = new MemoryStream();
+                mWriter = new BinaryWriter(mStream);
             }
         }
 
         public void Close()
         {
-            if (writer != null) writer.Close();
-            if (reader != null) reader.Close();
+            if (mWriter != null) mWriter.Close();
+            if (mReader != null) mReader.Close();
 
-            stream.Close();
-            writer = null;
-            reader = null;
-            stream = null;
+            mStream.Close();
+            mWriter = null;
+            mReader = null;
+            mStream = null;
         }
 
         public void WriteByte(byte v)
         {
-            writer.Write(v);
+            mWriter.Write(v);
         }
 
         public void WriteInt(int v)
         {
-            writer.Write((int)v);
+            mWriter.Write((int)v);
         }
 
         public void WriteShort(UInt16 v)
         {
-            writer.Write((UInt16)v);
+            mWriter.Write((UInt16)v);
         }
 
         public void WriteLong(long v)
         {
-            writer.Write((long)v);
+            mWriter.Write((long)v);
         }
 
         public void WriteFloat(float v)
         {
             byte[] temp = BitConverter.GetBytes(v);
             Array.Reverse(temp);
-            writer.Write(BitConverter.ToSingle(temp, 0));
+            mWriter.Write(BitConverter.ToSingle(temp, 0));
         }
 
         public void WriteDouble(double v)
         {
             byte[] temp = BitConverter.GetBytes(v);
             Array.Reverse(temp);
-            writer.Write(BitConverter.ToDouble(temp, 0));
+            mWriter.Write(BitConverter.ToDouble(temp, 0));
         }
 
         public void WriteString(string v)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(v);
-            writer.Write((ushort)bytes.Length);
-            writer.Write(bytes);
+            mWriter.Write((ushort)bytes.Length);
+            mWriter.Write(bytes);
         }
 
         public void WriteBytes(byte[] v)
         {
             Debug.Log("WriteBytes with uint 16 len" + v.Length);
             //writer.Write((UInt16)(v.Length));
-            writer.Write(v);
+            mWriter.Write(v);
         }
 
         public byte ReadByte()
         {
-            return reader.ReadByte();
+            return mReader.ReadByte();
         }
 
         public int ReadInt()
         {
-            return (int)reader.ReadInt32();
+            return (int)mReader.ReadInt32();
         }
 
         public ushort ReadShort()
         {
-            return (ushort)reader.ReadInt16();
+            return (ushort)mReader.ReadInt16();
         }
 
         public long ReadLong()
         {
-            return (long)reader.ReadInt64();
+            return (long)mReader.ReadInt64();
         }
 
         public float ReadFloat()
         {
-            byte[] temp = BitConverter.GetBytes(reader.ReadSingle());
+            byte[] temp = BitConverter.GetBytes(mReader.ReadSingle());
             Array.Reverse(temp);
             return BitConverter.ToSingle(temp, 0);
         }
 
         public double ReadDouble()
         {
-            byte[] temp = BitConverter.GetBytes(reader.ReadDouble());
+            byte[] temp = BitConverter.GetBytes(mReader.ReadDouble());
             Array.Reverse(temp);
             return BitConverter.ToDouble(temp, 0);
         }
@@ -129,30 +135,32 @@ namespace Net
         {
             ushort len = ReadShort();
             byte[] buffer = new byte[len];
-            buffer = reader.ReadBytes(len);
+            buffer = mReader.ReadBytes(len);
             return Encoding.UTF8.GetString(buffer);
         }
 
         public byte[] ReadBytes()
         {
             int len = ReadInt();
-            return reader.ReadBytes(len);
+            return mReader.ReadBytes(len);
         }
 
         public byte[] ReadBytes(int len)
         {
-            return reader.ReadBytes(len);
+            return mReader.ReadBytes(len);
         }
 
         public byte[] ToBytes()
         {
-            writer.Flush();
-            return stream.ToArray();
+            mWriter.Flush();
+            return mStream.ToArray();
         }
 
         public void Flush()
         {
-            writer.Flush();
+            mWriter.Flush();
         }
+
+        #endregion
     }
 }

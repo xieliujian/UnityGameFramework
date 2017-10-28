@@ -12,52 +12,58 @@ namespace Net
 
     public class NetManager : SingletonMonoBehaviour<NetManager>
     {
-        private Dictionary<Type, TocHandler> _handlerDic;
+        #region 变量
 
-        private SocketClient _socketClient;
+        /// <summary>
+        /// Socket
+        /// </summary>
+        private SocketClient mSocketClient = new SocketClient();
 
-        private static Queue<KeyValuePair<Type, object>> sEvents = new Queue<KeyValuePair<Type, object>>();
+        /// <summary>
+        /// 回调消息表
+        /// </summary>
+        private Dictionary<Type, TocHandler> mHandlerDict = new Dictionary<Type, TocHandler>();
 
-        SocketClient socketClient
+        /// <summary>
+        /// 事件队列
+        /// </summary>
+        private static Queue<KeyValuePair<Type, object>> mEventQueue = new Queue<KeyValuePair<Type, object>>();
+
+        /// <summary>
+        /// Socket
+        /// </summary>
+        public SocketClient SocketClient
         {
             get
             {
-                if (_socketClient == null)
-                {
-                    _socketClient = new SocketClient();
-                }
-
-                return _socketClient;
+                return mSocketClient;
             }
         }
+
+        #endregion
+
+        #region 内置函数
 
         void Start()
         {
             Init();
         }
 
-        /// <summary>
-        /// 交给Command，这里不想关心发给谁。
-        /// </summary>
         void Update()
         {
-            if (sEvents.Count > 0)
-            {
-                while (sEvents.Count > 0)
-                {
-                    KeyValuePair<Type, object> _event = sEvents.Dequeue();
-                    if (_handlerDic.ContainsKey(_event.Key))
-                    {
-                        _handlerDic[_event.Key](_event.Value);
-                    }
-                }
-            }
+            UpdateEventQueue();
         }
 
+        #endregion
+
+        #region 函数
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public void Init()
         {
-            _handlerDic = new Dictionary<Type, TocHandler>();
-            socketClient.OnRegister();
+            mSocketClient.OnRegister();
         }
 
         /// <summary>
@@ -65,7 +71,7 @@ namespace Net
         /// </summary>
         public void SendConnect()
         {
-            socketClient.SendConnect();
+            mSocketClient.SendConnect();
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace Net
         /// </summary>
         public void OnRemove()
         {
-            socketClient.OnRemove();
+            mSocketClient.OnRemove();
         }
 
         /// <summary>
@@ -81,7 +87,7 @@ namespace Net
         /// </summary>
         public void SendMessage(ByteBuffer buffer)
         {
-            socketClient.SendMessage(buffer);
+            mSocketClient.SendMessage(buffer);
         }
 
         /// <summary>
@@ -147,7 +153,7 @@ namespace Net
             {
                 MessageParser messageParser = ProtoDic.GetMessageParser(protoType.TypeHandle);
                 object toc = messageParser.ParseFrom(buff);
-                sEvents.Enqueue(new KeyValuePair<Type, object>(protoType, toc));
+                mEventQueue.Enqueue(new KeyValuePair<Type, object>(protoType, toc));
             }
             catch
             {
@@ -162,15 +168,34 @@ namespace Net
         /// <param name="handler"></param>
         public void AddHandler(Type type, TocHandler handler)
         {
-            if (_handlerDic.ContainsKey(type))
+            if (mHandlerDict.ContainsKey(type))
             {
-                _handlerDic[type] += handler;
+                mHandlerDict[type] += handler;
             }
             else
             {
-                _handlerDic.Add(type, handler);
+                mHandlerDict.Add(type, handler);
             }
         }
-    }
 
+        /// <summary>
+        /// 刷新事件队列
+        /// </summary>
+        private void UpdateEventQueue()
+        {
+            if (mEventQueue.Count <= 0)
+                return;
+
+            while (mEventQueue.Count > 0)
+            {
+                KeyValuePair<Type, object> _event = mEventQueue.Dequeue();
+                if (mHandlerDict.ContainsKey(_event.Key))
+                {
+                    mHandlerDict[_event.Key](_event.Value);
+                }
+            }
+        }
+
+        #endregion
+    } 
 }

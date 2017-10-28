@@ -9,19 +9,48 @@ using Net;
 
 public class SocketClient
 {
+    #region 常量和枚举
+
     public enum DisType
     {
         Exception,
         Disconnect,
     }
 
-    private TcpClient client = null;
-    private NetworkStream outStream = null;
-    private MemoryStream memStream;
-    private BinaryReader reader;
-
     private const int MAX_READ = 8192;
-    private byte[] byteBuffer = new byte[MAX_READ];
+
+    #endregion
+
+    #region 变量
+
+    /// <summary>
+    /// tcp client
+    /// </summary>
+    private TcpClient mClient = null;
+
+    /// <summary>
+    /// network stream
+    /// </summary>
+    private NetworkStream mNetStream = null;
+
+    /// <summary>
+    /// memory stream
+    /// </summary>
+    private MemoryStream mMemStream = null;
+
+    /// <summary>
+    /// reader
+    /// </summary>
+    private BinaryReader mReader = null;
+    
+    /// <summary>
+    /// 网络接收的数据
+    /// </summary>
+    private byte[] mByteBuffer = new byte[MAX_READ];
+
+    #endregion
+
+    #region 函数
 
     // Use this for initialization
     public SocketClient()
@@ -33,8 +62,8 @@ public class SocketClient
     /// </summary>
     public void OnRegister()
     {
-        memStream = new MemoryStream();
-        reader = new BinaryReader(memStream);
+        mMemStream = new MemoryStream();
+        mReader = new BinaryReader(mMemStream);
     }
 
     /// <summary>
@@ -43,8 +72,8 @@ public class SocketClient
     public void OnRemove()
     {
         Close();
-        reader.Close();
-        memStream.Close();
+        mReader.Close();
+        mMemStream.Close();
     }
 
     /// <summary>
@@ -52,15 +81,15 @@ public class SocketClient
     /// </summary>
     void ConnectServer(string host, int port)
     {
-        client = null;
-        client = new TcpClient();
-        client.SendTimeout = 1000;
-        client.ReceiveTimeout = 1000;
-        client.NoDelay = true;
+        mClient = null;
+        mClient = new TcpClient();
+        mClient.SendTimeout = 1000;
+        mClient.ReceiveTimeout = 1000;
+        mClient.NoDelay = true;
 
         try
         {
-            client.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
+            mClient.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
         }
         catch (Exception e)
         {
@@ -74,8 +103,8 @@ public class SocketClient
     /// </summary>
     void OnConnect(IAsyncResult asr)
     {
-        outStream = client.GetStream();
-        outStream.BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
+        mNetStream = mClient.GetStream();
+        mNetStream.BeginRead(mByteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
         NetManager.Instance.OnConnect();
     }
 
@@ -91,10 +120,10 @@ public class SocketClient
             BinaryWriter writer = new BinaryWriter(ms);
             writer.Write(message);
             writer.Flush();
-            if (client != null && client.Connected)
+            if (mClient != null && mClient.Connected)
             {
                 byte[] payload = ms.ToArray();
-                outStream.BeginWrite(payload, 0, payload.Length, new AsyncCallback(OnWrite), null);
+                mNetStream.BeginWrite(payload, 0, payload.Length, new AsyncCallback(OnWrite), null);
             }
             else
             {
@@ -111,10 +140,10 @@ public class SocketClient
         int bytesRead = 0;
         try
         {
-            lock (client.GetStream())
+            lock (mClient.GetStream())
             {       
                 //读取字节流到缓冲区
-                bytesRead = client.GetStream().EndRead(asr);
+                bytesRead = mClient.GetStream().EndRead(asr);
             }
 
             if (bytesRead < 1)
@@ -125,13 +154,13 @@ public class SocketClient
             }
 
             //分析数据包内容，抛给逻辑层
-            OnReceive(byteBuffer, bytesRead);
+            OnReceive(mByteBuffer, bytesRead);
 
-            lock (client.GetStream())
+            lock (mClient.GetStream())
             {         
                 //分析完，再次监听服务器发过来的新消息
-                Array.Clear(byteBuffer, 0, byteBuffer.Length);   //清空数组
-                client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
+                Array.Clear(mByteBuffer, 0, mByteBuffer.Length);   //清空数组
+                mClient.GetStream().BeginRead(mByteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
             }
         }
         catch (Exception ex)
@@ -158,10 +187,11 @@ public class SocketClient
     void PrintBytes()
     {
         string returnStr = string.Empty;
-        for (int i = 0; i < byteBuffer.Length; i++)
+        for (int i = 0; i < mByteBuffer.Length; i++)
         {
-            returnStr += byteBuffer[i].ToString("X2");
+            returnStr += mByteBuffer[i].ToString("X2");
         }
+
         Debug.LogError(returnStr);
     }
 
@@ -172,7 +202,7 @@ public class SocketClient
     {
         try
         {
-            outStream.EndWrite(r);
+            mNetStream.EndWrite(r);
         }
         catch (Exception ex)
         {
@@ -185,32 +215,32 @@ public class SocketClient
     /// </summary>
     void OnReceive(byte[] bytes, int length)
     {
-        memStream.Seek(0, SeekOrigin.End);
-        memStream.Write(bytes, 0, length);
+        mMemStream.Seek(0, SeekOrigin.End);
+        mMemStream.Write(bytes, 0, length);
 
         //Reset to beginning
-        memStream.Seek(0, SeekOrigin.Begin);
+        mMemStream.Seek(0, SeekOrigin.Begin);
         while (RemainingBytes() > 2)
         {
-            ushort messageLen = reader.ReadUInt16();
+            ushort messageLen = mReader.ReadUInt16();
             if (RemainingBytes() >= messageLen)
             {
                 MemoryStream ms = new MemoryStream();
                 BinaryWriter writer = new BinaryWriter(ms);
-                writer.Write(reader.ReadBytes(messageLen));
+                writer.Write(mReader.ReadBytes(messageLen));
                 ms.Seek(0, SeekOrigin.Begin);
                 OnReceivedMessage(ms);
             }
             else
             {
-                memStream.Position = memStream.Position - 2;
+                mMemStream.Position = mMemStream.Position - 2;
                 break;
             }
         }
 
-        byte[] leftover = reader.ReadBytes((int)RemainingBytes());
-        memStream.SetLength(0);
-        memStream.Write(leftover, 0, leftover.Length);
+        byte[] leftover = mReader.ReadBytes((int)RemainingBytes());
+        mMemStream.SetLength(0);
+        mMemStream.Write(leftover, 0, leftover.Length);
     }
 
     /// <summary>
@@ -218,7 +248,7 @@ public class SocketClient
     /// </summary>
     private long RemainingBytes()
     {
-        return memStream.Length - memStream.Position;
+        return mMemStream.Length - mMemStream.Position;
     }
 
     /// <summary>
@@ -249,10 +279,12 @@ public class SocketClient
     /// </summary>
     public void Close()
     {
-        if (client != null)
+        if (mClient != null)
         {
-            if (client.Connected) client.Close();
-            client = null;
+            if (mClient.Connected)
+                mClient.Close();
+
+            mClient = null;
         }
     }
 
@@ -272,4 +304,6 @@ public class SocketClient
         SessionSend(buffer.ToBytes());
         buffer.Close();
     }
+
+    #endregion
 }
