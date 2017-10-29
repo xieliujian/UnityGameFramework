@@ -1,4 +1,4 @@
-﻿
+
 using Google.Protobuf;
 using Msg;
 using System;
@@ -6,48 +6,24 @@ using System.Collections.Generic;
 
 namespace Proto
 {
-    public class ProtoDic
-    {
+   public class ProtoDic
+   {
        private static List<int> _protoId = new List<int>
        {
             0,
             1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
         };
 
-      private static List<Type> _protoType = new List<Type>
+      private static List<Type>_protoType = new List<Type>
       {
-            typeof(StartFight),
-            typeof(FightResult),
-            typeof(EnterFight),
-            typeof(SignUpResponse),
             typeof(TosChat),
             typeof(TocChat),
-            typeof(Login),
-            typeof(PlayerBaseInfo),
-            typeof(LoginSuccessfull),
-            typeof(LoginFaild),
        };
-    
+
        private static readonly Dictionary<RuntimeTypeHandle, MessageParser> Parsers = new Dictionary<RuntimeTypeHandle, MessageParser>()
        {
-            {typeof(StartFight).TypeHandle,StartFight.Parser },
-            {typeof(FightResult).TypeHandle,FightResult.Parser },
-            {typeof(EnterFight).TypeHandle,EnterFight.Parser },
-            {typeof(SignUpResponse).TypeHandle,SignUpResponse.Parser },
             {typeof(TosChat).TypeHandle,TosChat.Parser },
             {typeof(TocChat).TypeHandle,TocChat.Parser },
-            {typeof(Login).TypeHandle,Login.Parser },
-            {typeof(PlayerBaseInfo).TypeHandle,PlayerBaseInfo.Parser },
-            {typeof(LoginSuccessfull).TypeHandle,LoginSuccessfull.Parser },
-            {typeof(LoginFaild).TypeHandle,LoginFaild.Parser },
        };
 
         public static MessageParser GetMessageParser(RuntimeTypeHandle typeHandle)
@@ -71,7 +47,7 @@ namespace Proto
 
         public static bool ContainProtoId(int protoId)
         {
-            if (_protoId.Contains(protoId))
+            if(_protoId.Contains(protoId))
             {
                 return true;
             }
@@ -80,7 +56,7 @@ namespace Proto
 
         public static bool ContainProtoType(Type type)
         {
-            if (_protoType.Contains(type))
+            if(_protoType.Contains(type))
             {
                 return true;
             }
