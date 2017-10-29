@@ -1,3 +1,5 @@
 
+from ProtoMsgGen import ProtoMsgGen
+
 if __name__ == "__main__":
-    print("111")
+    ProtoMsgGen().process()
