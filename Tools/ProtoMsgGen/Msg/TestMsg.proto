@@ -1,0 +1,16 @@
+
+syntax = "proto3";
+
+package msg;
+
+message TosChat
+{
+    string name = 1;
+    string content = 2;
+}
+
+message TocChat
+{
+    string name = 1;
+    string content = 2;
+}
