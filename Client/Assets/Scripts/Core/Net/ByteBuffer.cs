@@ -92,7 +92,7 @@ namespace Net
 
         public void WriteBytes(byte[] v)
         {
-            Debug.Log("WriteBytes with uint 16 len" + v.Length);
+            //Debug.Log("WriteBytes with uint 16 len" + v.Length);
             //writer.Write((UInt16)(v.Length));
             mWriter.Write(v);
         }

@@ -115,7 +115,7 @@ namespace Net
             }
 
             UInt16 lengh = (UInt16)(result.Length + 2);
-            Debug.Log("lengh" + lengh + ",protoId" + protoId);
+            //Debug.Log("lengh" + lengh + ",protoId" + protoId);
             buff.WriteShort((UInt16)lengh);
             buff.WriteShort((UInt16)protoId);
             buff.WriteBytes(result);
