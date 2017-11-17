@@ -120,11 +120,9 @@ func (p *Processor) Route(msg interface{}, userData interface{}) error {
 	}
 	i := p.msgInfo[id]
 	if i.msgHandler != nil {
-		fmt.Println("call msgHandler ")
 		i.msgHandler([]interface{}{msg, userData})
 	}
 	if i.msgRouter != nil {
-		fmt.Println("call msgRouter ")
 		i.msgRouter.Go(msgType, msg, userData)
 	}
 	return nil

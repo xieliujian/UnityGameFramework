@@ -5,7 +5,6 @@ import (
 	"errors"
 	"io"
 	"math"
-	"fmt"
 )
 
 // --------------
@@ -66,23 +65,20 @@ func (p *MsgParser) SetByteOrder(littleEndian bool) {
 func (p *MsgParser) Read(conn *TCPConn) ([]byte, error) {
 	var b [4]byte
 	bufMsgLen := b[:p.lenMsgLen]
-	fmt.Println("tcp_msg->Read")
+
 	// read len
 	if _, err := io.ReadFull(conn, bufMsgLen); err != nil {
-		fmt.Println("io.ReadFull(conn, bufMsgLen) error")
 		return nil, err
 	}
 
 	// parse len
 	var msgLen uint32
-	fmt.Println("p.lenMsgLen %d",p.lenMsgLen)
 	switch p.lenMsgLen {
 	case 1:
 		msgLen = uint32(bufMsgLen[0])
 	case 2:
 		if p.littleEndian {
 			msgLen = uint32(binary.LittleEndian.Uint16(bufMsgLen))
-			fmt.Println("msgLen:%d", msgLen)
 		} else {
 			msgLen = uint32(binary.BigEndian.Uint16(bufMsgLen))
 		}
@@ -104,11 +100,9 @@ func (p *MsgParser) Read(conn *TCPConn) ([]byte, error) {
 	// data
 	msgData := make([]byte, msgLen)
 	if _, err := io.ReadFull(conn, msgData); err != nil {
-
-		fmt.Println("io.ReadFull(conn, msgData)")
 		return nil, err
 	}
-	fmt.Println("before return msgData")
+
 	return msgData, nil
 }
 
