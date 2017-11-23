@@ -1,4 +1,4 @@
-package gamedata
+package internal
 
 import (
 "encoding/csv"
