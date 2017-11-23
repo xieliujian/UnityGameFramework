@@ -8,6 +8,7 @@ import (
 	"os"
 "reflect"
 "strconv"
+	"strings"
 )
 
 var Comma = '\t'
@@ -97,7 +98,7 @@ func (rf *ConfigFile) Read(name string) error {
 	typeRecord := rf.typeRecord
 
 	// make records
-	records := make([]interface{}, len(lines)-1)
+	records := make([]interface{}, len(lines))
 
 	// make indexes
 	indexes := []Index{}
@@ -108,9 +109,9 @@ func (rf *ConfigFile) Read(name string) error {
 		}
 	}
 
-	for n := 1; n < len(lines); n++ {
+	for n := 0; n < len(lines); n++ {
 		value := reflect.New(typeRecord)
-		records[n-1] = value.Interface()
+		records[n] = value.Interface()
 		record := value.Elem()
 
 		line := lines[n]
@@ -170,7 +171,11 @@ func (rf *ConfigFile) Read(name string) error {
 			} else if kind == reflect.String {
 				field.SetString(strField)
 			} else if kind == reflect.Slice {
-				log.Debug("111")
+				splits := strings.Split(strField, ';')
+
+				
+
+				log.Debug(splits[0])
 			} else if kind == reflect.Map {
 				log.Debug("111")
 			}
