@@ -171,9 +171,9 @@ func (rf *ConfigFile) Read(name string) error {
 			} else if kind == reflect.String {
 				field.SetString(strField)
 			} else if kind == reflect.Slice {
-				splits := strings.Split(strField, ';')
+				splits := strings.Split(strField, ";")
 
-				
+
 
 				log.Debug(splits[0])
 			} else if kind == reflect.Map {
