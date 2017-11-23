@@ -14,6 +14,11 @@ import (
 var Comma = '\t'
 var Comment = '#'
 
+const (
+	SPLIT1 = ";"
+	SPLIT2 = ","
+)
+
 type Index map[interface{}]interface{}
 
 type ConfigFile struct {
@@ -171,13 +176,17 @@ func (rf *ConfigFile) Read(name string) error {
 			} else if kind == reflect.String {
 				field.SetString(strField)
 			} else if kind == reflect.Slice {
-				splits := strings.Split(strField, ";")
+				splits := strings.Split(strField, SPLIT1)
 
+				field.Set(reflect.ValueOf(splits))
 
-
-				log.Debug(splits[0])
 			} else if kind == reflect.Map {
-				log.Debug("111")
+				splits1 := strings.Split(strField, SPLIT1)
+				for j := 0; j < len(splits1); j++ {
+					splits2 := strings.Split(splits1[j], SPLIT2)
+
+					log.Debug(splits2[0] + splits2[1])
+				}
 			}
 
 			if err != nil {
