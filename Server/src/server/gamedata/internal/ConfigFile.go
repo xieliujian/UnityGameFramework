@@ -2,10 +2,10 @@ package internal
 
 import (
 "encoding/csv"
-"encoding/json"
 "errors"
 "fmt"
-"os"
+	"github.com/name5566/leaf/log"
+	"os"
 "reflect"
 "strconv"
 )
@@ -169,11 +169,10 @@ func (rf *ConfigFile) Read(name string) error {
 				}
 			} else if kind == reflect.String {
 				field.SetString(strField)
-			} else if kind == reflect.Struct ||
-				kind == reflect.Array ||
-				kind == reflect.Slice ||
-				kind == reflect.Map {
-				err = json.Unmarshal([]byte(strField), field.Addr().Interface())
+			} else if kind == reflect.Slice {
+				log.Debug("111")
+			} else if kind == reflect.Map {
+				log.Debug("111")
 			}
 
 			if err != nil {
