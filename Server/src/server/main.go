@@ -7,6 +7,7 @@ import (
 	"server/game"
 	"server/gate"
 	"server/login"
+	"server/gamedata"
 )
 
 func main() {
@@ -15,6 +16,8 @@ func main() {
 	lconf.LogFlag = conf.LogFlag
 	lconf.ConsolePort = conf.Server.ConsolePort
 	lconf.ProfilePath = conf.Server.ProfilePath
+
+	gamedata.LoadTables()
 
 	leaf.Run(
 		game.Module,

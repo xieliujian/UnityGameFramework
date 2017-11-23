@@ -15,7 +15,7 @@ var Comment = '#'
 
 type Index map[interface{}]interface{}
 
-type RecordFile struct {
+type ConfigFile struct {
 	Comma      rune
 	Comment    rune
 	typeRecord reflect.Type
@@ -23,7 +23,7 @@ type RecordFile struct {
 	indexes    []Index
 }
 
-func New(st interface{}) (*RecordFile, error) {
+func New(st interface{}) (*ConfigFile, error) {
 	typeRecord := reflect.TypeOf(st)
 	if typeRecord == nil || typeRecord.Kind() != reflect.Struct {
 		return nil, errors.New("st must be a struct")
@@ -67,13 +67,13 @@ func New(st interface{}) (*RecordFile, error) {
 		}
 	}
 
-	rf := new(RecordFile)
+	rf := new(ConfigFile)
 	rf.typeRecord = typeRecord
 
 	return rf, nil
 }
 
-func (rf *RecordFile) Read(name string) error {
+func (rf *ConfigFile) Read(name string) error {
 	file, err := os.Open(name)
 	if err != nil {
 		return err
@@ -200,22 +200,22 @@ func (rf *RecordFile) Read(name string) error {
 	return nil
 }
 
-func (rf *RecordFile) Record(i int) interface{} {
+func (rf *ConfigFile) Record(i int) interface{} {
 	return rf.records[i]
 }
 
-func (rf *RecordFile) NumRecord() int {
+func (rf *ConfigFile) NumRecord() int {
 	return len(rf.records)
 }
 
-func (rf *RecordFile) Indexes(i int) Index {
+func (rf *ConfigFile) Indexes(i int) Index {
 	if i >= len(rf.indexes) {
 		return nil
 	}
 	return rf.indexes[i]
 }
 
-func (rf *RecordFile) Index(i interface{}) interface{} {
+func (rf *ConfigFile) Index(i interface{}) interface{} {
 	index := rf.Indexes(0)
 	if index == nil {
 		return nil
