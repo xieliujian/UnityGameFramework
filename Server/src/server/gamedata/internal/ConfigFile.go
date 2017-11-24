@@ -56,7 +56,6 @@ func New(st interface{}) (*ConfigFile, error) {
 			return nil, fmt.Errorf("invalid type: %v %s",
 				f.Name, kind)
 		}
-
 	}
 
 	rf := new(ConfigFile)
