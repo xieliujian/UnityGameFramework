@@ -1,14 +1,13 @@
 package internal
 
 import (
-"encoding/csv"
-"errors"
-"fmt"
-	"github.com/name5566/leaf/log"
+	"encoding/csv"
+	"encoding/json"
+	"errors"
+	"fmt"
 	"os"
-"reflect"
-"strconv"
-	"strings"
+	"reflect"
+	"strconv"
 )
 
 var Comma = '\t'
@@ -175,18 +174,11 @@ func (rf *ConfigFile) Read(name string) error {
 				}
 			} else if kind == reflect.String {
 				field.SetString(strField)
-			} else if kind == reflect.Slice {
-				splits := strings.Split(strField, SPLIT1)
-
-				field.Set(reflect.ValueOf(splits))
-
-			} else if kind == reflect.Map {
-				splits1 := strings.Split(strField, SPLIT1)
-				for j := 0; j < len(splits1); j++ {
-					splits2 := strings.Split(splits1[j], SPLIT2)
-
-					log.Debug(splits2[0] + splits2[1])
-				}
+			} else if kind == reflect.Struct ||
+				kind == reflect.Array ||
+				kind == reflect.Slice ||
+				kind == reflect.Map {
+				err = json.Unmarshal([]byte(strField), field.Addr().Interface())
 			}
 
 			if err != nil {
