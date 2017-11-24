@@ -13,11 +13,6 @@ import (
 var Comma = '\t'
 var Comment = '#'
 
-const (
-	SPLIT1 = ";"
-	SPLIT2 = ","
-)
-
 type Index map[interface{}]interface{}
 
 type ConfigFile struct {
@@ -62,14 +57,6 @@ func New(st interface{}) (*ConfigFile, error) {
 				f.Name, kind)
 		}
 
-		tag := f.Tag
-		if tag == "index" {
-			switch kind {
-			case reflect.Struct, reflect.Slice, reflect.Map:
-				return nil, fmt.Errorf("could not index %s field %v %v",
-					kind, i, f.Name)
-			}
-		}
 	}
 
 	rf := new(ConfigFile)
@@ -104,15 +91,6 @@ func (rf *ConfigFile) Read(name string) error {
 	// make records
 	records := make([]interface{}, len(lines))
 
-	// make indexes
-	indexes := []Index{}
-	for i := 0; i < typeRecord.NumField(); i++ {
-		tag := typeRecord.Field(i).Tag
-		if tag == "index" {
-			indexes = append(indexes, make(Index))
-		}
-	}
-
 	for n := 0; n < len(lines); n++ {
 		value := reflect.New(typeRecord)
 		records[n] = value.Interface()
@@ -123,8 +101,6 @@ func (rf *ConfigFile) Read(name string) error {
 			return fmt.Errorf("line %v, field count mismatch: %v (file) %v (st)",
 				n, len(line), typeRecord.NumField())
 		}
-
-		iIndex := 0
 
 		for i := 0; i < typeRecord.NumField(); i++ {
 			f := typeRecord.Field(i)
@@ -185,22 +161,10 @@ func (rf *ConfigFile) Read(name string) error {
 				return fmt.Errorf("parse field (row=%v, col=%v) error: %v",
 					n, i, err)
 			}
-
-			// indexes
-			if f.Tag == "index" {
-				index := indexes[iIndex]
-				iIndex++
-				if _, ok := index[field.Interface()]; ok {
-					return fmt.Errorf("index error: duplicate at (row=%v, col=%v)",
-						n, i)
-				}
-				index[field.Interface()] = records[n-1]
-			}
 		}
 	}
 
 	rf.records = records
-	rf.indexes = indexes
 
 	return nil
 }
@@ -213,18 +177,4 @@ func (rf *ConfigFile) NumRecord() int {
 	return len(rf.records)
 }
 
-func (rf *ConfigFile) Indexes(i int) Index {
-	if i >= len(rf.indexes) {
-		return nil
-	}
-	return rf.indexes[i]
-}
-
-func (rf *ConfigFile) Index(i interface{}) interface{} {
-	index := rf.Indexes(0)
-	if index == nil {
-		return nil
-	}
-	return index[i]
-}
 
