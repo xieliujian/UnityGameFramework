@@ -50,3 +50,30 @@ UINTY_RESOURCE_PATH_NAME = "Resources/"
 UINTY_STREAMINGASSETS_PATH_NAME = "StreamingAssets/"
 
 # --------------------------------Server--------------------------------
+# 所有的服务器类型
+SERVER_GO_CODE_TYPE = "Go"
+
+# 服务器代码的后缀
+SERVER_GO_CODE_EXT = ".go"
+
+# 服务器代码类型
+SERVER_CODE_TYPE = "Go"
+
+# 服务器输出根目录
+#SERVER_TABLE_ROOT_DIR = "./"
+SERVER_TABLE_ROOT_DIR = "../../UnityGameFramework/trunk/Server/"
+
+# 服务器数据目录
+#SERVER_TABLE_DATA_DIR = "GameData/TableData/"
+SERVER_TABLE_DATA_DIR = "bin/gamedata/"
+
+# 服务器代码目录
+#SERVER_TABLE_CODE_DIR = "Table/"
+SERVER_TABLE_CODE_DIR = "src/server/gamedata/"
+
+# 服务器数据的后缀
+SERVER_TABLE_DATA_EXT = ".txt"
+
+# 服务器配置管理文件名
+SERVER_CONFIGMANAGER_FILENAME = "ConfigManager"
+

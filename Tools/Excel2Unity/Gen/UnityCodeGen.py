@@ -92,7 +92,9 @@ class UnityCodeGen(CodeGen):
 		if uselist:
 			self.mFileContent += "	private List<" + tablename + "> mList = new List<" + tablename + ">();\n"
 		else:
-			self.mFileContent += "	private Dictionary<int, " + tablename + "> mDict = new Dictionary<int, " + tablename + ">();\n"
+			fieldtype = table.cell(2, keylist[0]).value
+			fieldtype = fieldtype.lower()
+			self.mFileContent += "	private Dictionary<{0}, ".format(fieldtype) + tablename + "> mDict = new Dictionary<{0}, ".format(fieldtype) + tablename + ">();\n"
 
 		self.mFileContent += "\n"
 		self.mFileContent += "	public void InitTable()\n"
@@ -193,7 +195,7 @@ class UnityCodeGen(CodeGen):
 		elif fieldtype == "map[string|string]":
 			self.mFileContent += "		" + fieldname + " = ConfigUtil.ParseDictStringString(fields[" + str(index) + "]);\n"
 
-	# 生成生成数据函数
+	# 生成数据函数
 	def gen_gendatafunc(self, table, tablename, keylist):
 		keylen = keylist.__len__()
 		if keylen == 0:		# 没有key值没有生成函数

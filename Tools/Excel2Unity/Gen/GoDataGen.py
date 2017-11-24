@@ -1,30 +1,21 @@
 
-from Config import EXCEL_DIR
-from Config import UNITY_TABLE_ROOT_DIR
-from Config import UNITY_TABLE_DATA_DIR
-from Config import UNITY_TABLE_DATA_EXT
-from Config import UINTY_TABLE_USE_RESOURCE_PATH_READ
-from Config import UINTY_RESOURCE_PATH_NAME
-from Config import UINTY_STREAMINGASSETS_PATH_NAME
 from Gen.DataGen import DataGen
+from Config import EXCEL_DIR
+from Config import SERVER_TABLE_ROOT_DIR
+from Config import SERVER_TABLE_DATA_DIR
+from Config import SERVER_TABLE_DATA_EXT
 import os
 
 
-class UnityDataGen(DataGen):
+class GoDataGen(DataGen):
 
 	# 文件生成函数
 	def process(self, filename, fields, table):
 		# 创建输出路径
 		path = filename.replace(EXCEL_DIR, "")
-
-		if UINTY_TABLE_USE_RESOURCE_PATH_READ == True:
-			rootpath = UNITY_TABLE_ROOT_DIR + UINTY_RESOURCE_PATH_NAME
-		else:
-			rootpath = UNITY_TABLE_ROOT_DIR + UINTY_STREAMINGASSETS_PATH_NAME
-
-		path = rootpath + UNITY_TABLE_DATA_DIR + path
+		path = SERVER_TABLE_ROOT_DIR + SERVER_TABLE_DATA_DIR + path
 		path = os.path.splitext(path)[0]
-		path += UNITY_TABLE_DATA_EXT
+		path += SERVER_TABLE_DATA_EXT
 
 		# 生成文件目录, 不重复创建目录
 		filedir = os.path.dirname(path)
@@ -32,6 +23,8 @@ class UnityDataGen(DataGen):
 			os.makedirs(filedir)
 
 		# 生成数据
+		fieldendval = fields[len(fields) - 1]
+
 		fileContent = ""
 		for row in range(5, table.nrows):
 			for col in range(table.ncols):
@@ -42,7 +35,10 @@ class UnityDataGen(DataGen):
 					if fieldtype == "int":
 						fieldvalue = int(fieldvalue)
 
-					fileContent += ("{0}\t").format(fieldvalue)
+					if col == fieldendval:
+						fileContent += ("{0}").format(fieldvalue)
+					else:
+						fileContent += ("{0}\t").format(fieldvalue)
 
 			fileContent += "\n"
 
@@ -50,3 +46,12 @@ class UnityDataGen(DataGen):
 		file = open(path, "wb")
 		file.write(fileContent.encode())
 		file.close()
+
+
+
+
+
+
+
+
+
