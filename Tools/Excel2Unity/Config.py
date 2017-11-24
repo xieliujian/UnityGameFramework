@@ -61,7 +61,7 @@ SERVER_CODE_TYPE = "Go"
 
 # 服务器输出根目录
 #SERVER_TABLE_ROOT_DIR = "./"
-SERVER_TABLE_ROOT_DIR = "../../UnityGameFramework/trunk/Server/"
+SERVER_TABLE_ROOT_DIR = "../../Server/"
 
 # 服务器数据目录
 #SERVER_TABLE_DATA_DIR = "GameData/TableData/"
