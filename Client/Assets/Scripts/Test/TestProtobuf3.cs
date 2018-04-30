@@ -10,6 +10,11 @@ public class TestProtobuf3 : MonoBehaviour
 
     public GameObject mSendMsgGo;
 
+    /// <summary>
+    /// 显示信息
+    /// </summary>
+    public UILabel mShowInfo;
+
     #endregion
 
     #region 内置函数
@@ -48,6 +53,8 @@ public class TestProtobuf3 : MonoBehaviour
             return;
 
         Debug.Log(msg.ToString());
+        mShowInfo.text += msg.ToString();
+        mShowInfo.text += "\n";
     }
 
     #endregion
