@@ -48,6 +48,7 @@ public class TestProtobuf3 : MonoBehaviour
 
     private void TocChatCallback(object obj)
     {
+        Debug.Log("111");
         TocChat msg = (TocChat)obj;
         if (msg == null)
             return;
