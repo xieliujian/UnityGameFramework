@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 {
     #region 变量
 
-    private Action OnGameStart = null;
+    private Action OnGameStartAction = null;
 
     #endregion
 
@@ -36,13 +36,16 @@ public class GameController : MonoBehaviour
 
     public void Initialize(Action action)
     {
-        OnGameStart = action;
+        OnGameStartAction = action;
         gameObject.AddComponent<NetManager>();
         gameObject.AddComponent<ResourcesUpdateManager>();
         gameObject.AddComponent<ResourceManager>();
 
-        if (OnGameStart != null)
-            OnGameStart();
+        Gate.ResUpdateMgr.StartResourceUpdate(() =>
+        {
+            if (OnGameStartAction != null)
+                OnGameStartAction();
+        });
     }
 
     #endregion
