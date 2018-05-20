@@ -56,7 +56,7 @@ namespace Util
             if (!Application.isEditor)
                 return 0;
 
-            string streamDir = Application.streamingAssetsPath;
+            string streamDir = AppPlatform.StreamingAssetsPath;
             if (!Directory.Exists(streamDir))
             {
                 return -1;
