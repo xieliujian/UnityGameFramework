@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Net;
+using Util;
 
 public class GameController : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class GameController : MonoBehaviour
 
     public void Initialize(Action action)
     {
+        if (!Utility.CheckEnvironment())
+            return;
+
         OnGameStartAction = action;
         gameObject.AddComponent<NetManager>();
         gameObject.AddComponent<ResourcesUpdateManager>();

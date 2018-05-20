@@ -53,9 +53,83 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
     IEnumerator OnUpdateResource()
     {
-        
+        if (!AppConst.UpdateMode)
+        {
+            ResourceUpdateEnd();
+            yield break;
+        }
+
+        string dataPath = AppPlatform.DataPath;  //数据目录
+        string url = AppConst.WebUrl + AppConst.AppName.ToLower() + "/";
+        string listUrl = url + "files.txt";
+
+        Debug.Log("LoadUpdate---->>>" + listUrl);
+
+        WWW www = new WWW(listUrl);
+        yield return www;
+
+        if (www.error != null)
+        {
+            Debug.Log(www.error);
+            yield break;
+        }
+
+        if (!Directory.Exists(dataPath))
+        {
+            Directory.CreateDirectory(dataPath);
+        }
+
+        File.WriteAllBytes(dataPath + "files.txt", www.bytes);
+
+        string filesText = www.text;
+        string[] files = filesText.Split('\n');
+        for (int i = 0; i < files.Length; i++)
+        {
+            if (string.IsNullOrEmpty(files[i]))
+                continue;
+
+            string[] keyValue = files[i].Split('|');
+            string f = keyValue[0];
+            string localfile = (dataPath + f).Trim();
+
+            string path = Path.GetDirectoryName(localfile);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string fileUrl = url + f;
+            bool canUpdate = !File.Exists(localfile);
+            if (!canUpdate)
+            {
+                string remoteMd5 = keyValue[1].Trim();
+                string localMd5 = Utility.Md5file(localfile);
+                canUpdate = !remoteMd5.Equals(localMd5);
+                if (canUpdate)
+                    File.Delete(localfile);
+            }
+
+            if (canUpdate)
+            {   
+                //本地缺少文件
+                Debug.Log(fileUrl);
+
+                www = new WWW(fileUrl);
+                yield return www;
+
+                if (www.error != null)
+                {
+                    Debug.Log(www.error);
+                    yield break;
+                }
+
+                File.WriteAllBytes(localfile, www.bytes);
+            }
+        }
+
+        yield return new WaitForEndOfFrame();
+
         ResourceUpdateEnd();
-        yield break;
     }
 
     IEnumerator OnExtractResource()

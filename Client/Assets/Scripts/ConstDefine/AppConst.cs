@@ -12,6 +12,8 @@ public class AppConst
     public const string AppName = "UnityGameFramework";                             // 游戏名字
 
     public const bool UpdateMode = false;                                           //更新模式-默认关闭 
+
+    public const string WebUrl = "http://45.76.76.36:1010/";                        //测试更新地址
 }
 
 public class AppPlatform
@@ -20,7 +22,7 @@ public class AppPlatform
     {
         get
         {
-            string appname = AppConst.AppName.ToString();
+            string appname = AppConst.AppName.ToLower();
             if (Application.isMobilePlatform)
             {
                 return Application.persistentDataPath + "/" + appname + "/";
