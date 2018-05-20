@@ -75,6 +75,14 @@ namespace Net
         }
 
         /// <summary>
+        /// 关闭连接
+        /// </summary>
+        public void CloseSocket()
+        {
+            mSocketClient.Close();
+        }
+
+        /// <summary>
         /// 关闭网络
         /// </summary>
         public void OnRemove()

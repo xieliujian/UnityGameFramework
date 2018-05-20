@@ -31,6 +31,11 @@ public class GameController : MonoBehaviour
 		
 	}
 
+    private void OnDestroy()
+    {
+        NetManager.Instance.CloseSocket();
+    }
+
     #endregion
 
     #region 函数
