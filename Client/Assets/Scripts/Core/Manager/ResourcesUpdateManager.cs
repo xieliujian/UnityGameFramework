@@ -212,8 +212,11 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
     private void ResourceUpdateEnd()
     {
-        if (OnResourceUpdateEndAction != null)
-            OnResourceUpdateEndAction();
+        Gate.ResMgr.Initialize(AppConst.AppName.ToLower(), ()=>
+        {
+            if (OnResourceUpdateEndAction != null)
+                OnResourceUpdateEndAction();
+        });   
     }
 
     #endregion

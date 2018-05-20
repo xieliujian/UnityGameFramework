@@ -14,6 +14,10 @@ public class AppConst
     public const bool UpdateMode = false;                                           //更新模式-默认关闭 
 
     public const string WebUrl = "http://45.76.76.36:1010/";                        //测试更新地址
+
+    public const string ExtName = ".unity3d";                                       //素材扩展名
+
+    public const string AssetDir = "StreamingAssets";                               //素材目录 
 }
 
 public class AppPlatform
@@ -40,5 +44,10 @@ public class AppPlatform
             string path = Application.streamingAssetsPath + "/" + appname + "/";
             return path;
         }
+    }
+
+    public static string GetRelativePath()
+    {
+        return "file:///" + DataPath;
     }
 }
