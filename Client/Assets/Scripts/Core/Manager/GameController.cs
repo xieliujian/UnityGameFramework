@@ -49,6 +49,9 @@ public class GameController : MonoBehaviour
         gameObject.AddComponent<NetManager>();
         gameObject.AddComponent<ResourcesUpdateManager>();
         gameObject.AddComponent<ResourceManager>();
+        gameObject.AddComponent<MsgManager>();
+
+        Gate.MsgMgr.Register();
 
         Gate.ResUpdateMgr.StartResourceUpdate(() =>
         {

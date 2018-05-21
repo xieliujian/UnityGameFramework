@@ -12,16 +12,19 @@ namespace Proto
        {
             0,
             1,
+            2,
         };
 
       private static List<Type>_protoType = new List<Type>
       {
+            typeof(TocNotifyConnect),
             typeof(TosChat),
             typeof(TocChat),
        };
 
        private static readonly Dictionary<RuntimeTypeHandle, MessageParser> Parsers = new Dictionary<RuntimeTypeHandle, MessageParser>()
        {
+            {typeof(TocNotifyConnect).TypeHandle,TocNotifyConnect.Parser },
             {typeof(TosChat).TypeHandle,TosChat.Parser },
             {typeof(TocChat).TypeHandle,TocChat.Parser },
        };

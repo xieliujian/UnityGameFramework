@@ -189,6 +189,14 @@ namespace Net
             }
         }
 
+        public void RemoveHandle(Type type, TocHandler handler)
+        {
+            if (mHandlerDict.ContainsKey(type))
+            {
+                mHandlerDict[type] -= handler;
+            }
+        }
+
         /// <summary>
         /// 刷新事件队列
         /// </summary>

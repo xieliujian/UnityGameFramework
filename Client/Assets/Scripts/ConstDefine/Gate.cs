@@ -20,4 +20,12 @@ public static class Gate
             return ResourceManager.Instance;
         }
     }
+
+    public static MsgManager MsgMgr
+    {
+        get
+        {
+            return MsgManager.Instance;
+        }
+    }
 }
