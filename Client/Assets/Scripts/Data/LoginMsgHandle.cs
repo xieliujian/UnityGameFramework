@@ -23,5 +23,7 @@ public class LoginMsgHandle : BaseMsgHandle
             return;
 
         Debug.Log("OnMsgNotifyConnect");
+        ServerListUI.Instance.SetVisible(false);
+        UIGenerate.CreateUI("testprotobuf3/testprotobuf3", "testprotobuf3", null);
     }
 }

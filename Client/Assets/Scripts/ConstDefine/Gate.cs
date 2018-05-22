@@ -28,4 +28,16 @@ public static class Gate
             return MsgManager.Instance;
         }
     }
+
+    public static Transform GUIRoot
+    {
+        get
+        {
+            GameObject go = GameObject.FindWithTag("GUIRoot");
+            if (go == null)
+                return null;
+
+            return go.transform;
+        }
+    }
 }

@@ -53,6 +53,8 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
     IEnumerator OnUpdateResource()
     {
+        LoadingLayer.Show();
+
         if (!AppConst.UpdateMode)
         {
             ResourceUpdateEnd();
@@ -71,6 +73,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         if (www.error != null)
         {
             Debug.Log(www.error);
+            LoadingLayer.Hide();
             yield break;
         }
 
@@ -85,6 +88,9 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         string[] files = filesText.Split('\n');
         for (int i = 0; i < files.Length; i++)
         {
+            float percent = (float)i / (files.Length - 1);
+            LoadingLayer.SetProgressbarValue(percent);
+
             if (string.IsNullOrEmpty(files[i]))
                 continue;
 
@@ -120,6 +126,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
                 if (www.error != null)
                 {
                     Debug.Log(www.error);
+                    LoadingLayer.Hide();
                     yield break;
                 }
 
@@ -147,6 +154,8 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
         Directory.CreateDirectory(datapath);
 
+        LoadingLayer.Show();
+
         if (Application.platform == RuntimePlatform.Android)
         {
             WWW www = new WWW(infile);
@@ -168,13 +177,16 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
         //释放所有文件到数据目录
         string[] files = File.ReadAllLines(outfile);
-        foreach (var file in files)
+        for (int i = 0; i < files.Length; i++)
         {
+            float percent = (float)i / (files.Length - 1);
+            string file = files[i];
             string[] fs = file.Split('|');
             infile = streampath + fs[0];  //
             outfile = datapath + fs[0];
 
             Debug.Log("正在解包文件:>" + infile);
+            LoadingLayer.SetProgressbarValue(percent);
 
             string dir = Path.GetDirectoryName(outfile);
             if (!Directory.Exists(dir))
@@ -212,6 +224,8 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
 
     private void ResourceUpdateEnd()
     {
+        LoadingLayer.Hide();
+
         Gate.ResMgr.Initialize(AppConst.AppName.ToLower(), ()=>
         {
             if (OnResourceUpdateEndAction != null)

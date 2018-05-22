@@ -86,9 +86,17 @@ public class Packager
                 string[] assetNames = assetpath.Split('/');
                 string assetName = "";
 
-                assetName = assetNames[2] + "/" + assetNames[assetNames.Length - 2];
-                assetImporter.assetBundleName = assetName;
-                assetImporter.assetBundleVariant = "unity3d";
+                if (AppConst.IsEmptyResBundle)
+                {
+                    assetImporter.assetBundleName = "";
+                    assetImporter.assetBundleVariant = "";
+                }
+                else
+                {
+                    assetName = assetNames[2] + "/" + assetNames[assetNames.Length - 2];
+                    assetImporter.assetBundleName = assetName;
+                    assetImporter.assetBundleVariant = "unity3d";
+                }
             }
         }
 

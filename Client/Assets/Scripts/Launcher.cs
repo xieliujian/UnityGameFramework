@@ -61,7 +61,7 @@ public class Launcher : MonoBehaviour
 
     private void GameStart()
     {
-        NetManager.Instance.SendConnect();
+        UIGenerate.CreateUI("serverlist/serverlist", "serverlist", null);
     }
 
     #endregion
