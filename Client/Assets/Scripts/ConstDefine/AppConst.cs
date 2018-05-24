@@ -61,7 +61,10 @@ public class AppPlatform
     public static string GetRelativePath()
     {
         Debug.Log(DataPath);
-        return "file:///" + DataPath;
+
+        // 这里不能用 "file:///" 需要用 "file://", 不然在移动平台www无法读取资源
+        // return "file:///" + DataPath;
+        return "file://" + DataPath;
     }
 
     public static string GetCurPlatform()
