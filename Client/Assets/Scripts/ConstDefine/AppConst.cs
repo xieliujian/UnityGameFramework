@@ -17,7 +17,7 @@ public class AppConst
 
     public const bool UpdateMode = true;                                           //更新模式-默认关闭 
 
-    public const bool IsEmptyResBundle = false;                                     // 是否空的资源包
+    public const bool IsEmptyResBundle = true;                                     // 是否空的资源包
 
     public const string WebUrl = "http://45.76.76.36:3000/";                        //测试更新地址
 
@@ -32,13 +32,19 @@ public class AppPlatform
     {
         get
         {
+            string assetdir = AppConst.AssetDir;
             string appname = AppConst.AppName.ToLower();
-            if (Application.isMobilePlatform)
+            if (Application.isEditor)
             {
-                return Application.persistentDataPath + "/" + appname + "/";
+                return "c:/" + appname + "/";
             }
 
-            return "c:/" + appname + "/";
+            if (Application.platform == RuntimePlatform.WindowsPlayer)
+            {
+                return Application.dataPath + "/" + assetdir + "/" + appname + "/";
+            }
+
+            return Application.persistentDataPath + "/" + appname + "/";
         }
     }
 
@@ -54,6 +60,7 @@ public class AppPlatform
 
     public static string GetRelativePath()
     {
+        Debug.Log(DataPath);
         return "file:///" + DataPath;
     }
 
@@ -81,8 +88,10 @@ public class AppPlatform
 
     public static string GetCurPackageResPath()
     {
+        string assetdir = AppConst.AssetDir;
         string curplatform = GetCurPlatform();
-        string path = AppConst.AssetDir.ToLower() + "/" + curplatform + "/" + AppConst.AppName + "/";
+        string appname = AppConst.AppName.ToLower();
+        string path = assetdir + "/" + curplatform + "/" + appname + "/";
         return path;
     }
 
@@ -144,10 +153,11 @@ public class AppPlatform
             platformpath = RuntimePlatform.IPhonePlayer.ToString().ToLower();
         }
 
+        string assetdir = AppConst.AssetDir;
         string appname = AppConst.AppName.ToLower();
-        string respath = Application.dataPath + "/" + AppConst.AssetDir + "/" + platformpath + "/" + appname + "/";
+        string respath = Application.dataPath + "/" + assetdir + "/" + platformpath + "/" + appname + "/";
         return respath;
     }
 
-#endif
+    #endif
 }

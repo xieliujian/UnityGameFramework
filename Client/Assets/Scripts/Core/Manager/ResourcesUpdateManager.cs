@@ -62,7 +62,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         }
 
         string dataPath = AppPlatform.DataPath;  //数据目录
-        string url = AppConst.WebUrl + AppConst.AppName.ToLower() + "/";
+        string url = AppConst.WebUrl + AppPlatform.GetCurPackageResPath();
         string listUrl = url + "files.txt";
 
         Debug.Log("LoadUpdate---->>>" + listUrl);
