@@ -13,19 +13,31 @@ public class Packager
     [MenuItem("UnityGameFramework/Build iPhone Resource", false, 100)]
     public static void BuildiPhoneResource()
     {
-        BuildAssetResource(BuildTarget.iOS);
+        BuildAssetResource(BuildTarget.iOS, AppPlatform.StreamingAssetsPath);
     }
 
     [MenuItem("UnityGameFramework/Build Android Resource", false, 101)]
     public static void BuildAndroidResource()
     {
-        BuildAssetResource(BuildTarget.Android);
+        BuildAssetResource(BuildTarget.Android, AppPlatform.StreamingAssetsPath);
     }
 
     [MenuItem("UnityGameFramework/Build Windows Resource", false, 102)]
     public static void BuildWindowsResource()
     {
-        BuildAssetResource(BuildTarget.StandaloneWindows);
+        BuildAssetResource(BuildTarget.StandaloneWindows, AppPlatform.StreamingAssetsPath);
+    }
+
+    [MenuItem("UnityGameFramework/PackageAllResource", false, 103)]
+    public static void PackageAllResource()
+    {
+        BuildAssetResource(BuildTarget.StandaloneWindows, AppPlatform.GetPackageResPath(BuildTarget.StandaloneWindows));
+        BuildAssetResource(BuildTarget.Android, AppPlatform.GetPackageResPath(BuildTarget.Android));
+        BuildAssetResource(BuildTarget.iOS, AppPlatform.GetPackageResPath(BuildTarget.iOS));
+
+        BuildTargetGroup curtargetgroup = AppPlatform.GetCurBuildTargetGroup();
+        BuildTarget curtarget = AppPlatform.GetCurBuildTarget();
+        EditorUserBuildSettings.SwitchActiveBuildTarget(curtargetgroup, curtarget);
     }
 
     #endregion
@@ -41,30 +53,28 @@ public class Packager
     /// <summary>
     /// 生成绑定素材
     /// </summary>
-    private static void BuildAssetResource(BuildTarget target)
+    private static void BuildAssetResource(BuildTarget target, string resPath)
     {
         // 1.
         if (Directory.Exists(AppPlatform.DataPath))
         {
             Directory.Delete(AppPlatform.DataPath, true);
         }
-
-        string streamPath = AppPlatform.StreamingAssetsPath;
-        if (Directory.Exists(streamPath))
+        
+        if (Directory.Exists(resPath))
         {
-            Directory.Delete(streamPath, true);
+            Directory.Delete(resPath, true);
         }
-        Directory.CreateDirectory(streamPath);
+        Directory.CreateDirectory(resPath);
         AssetDatabase.Refresh();
 
         // 2.
         SetAllAssetBundleName();
 
         // 3.
-        string resPath = AppPlatform.StreamingAssetsPath;
         BuildPipeline.BuildAssetBundles(resPath, BuildAssetBundleOptions.None, target);
         
-        BuildFileIndex();
+        BuildFileIndex(resPath);
         AssetDatabase.Refresh();
     }
 
@@ -103,9 +113,8 @@ public class Packager
         AssetDatabase.Refresh();
     }
 
-    private static void BuildFileIndex()
+    private static void BuildFileIndex(string resPath)
     {
-        string resPath = AppPlatform.StreamingAssetsPath;
         ///----------------------创建文件列表-----------------------
         string newFilePath = resPath + "/files.txt";
         if (File.Exists(newFilePath))

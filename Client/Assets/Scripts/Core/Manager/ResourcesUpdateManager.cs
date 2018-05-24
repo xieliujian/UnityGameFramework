@@ -70,7 +70,8 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         WWW www = new WWW(listUrl);
         yield return www;
 
-        if (www.error != null)
+        if (!string.IsNullOrEmpty(www.error))
+        //if (www.error != null)
         {
             Debug.Log(www.error);
             LoadingLayer.Hide();
@@ -123,7 +124,8 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
                 www = new WWW(fileUrl);
                 yield return www;
 
-                if (www.error != null)
+                if (!string.IsNullOrEmpty(www.error))
+                 //   if (www.error != null)
                 {
                     Debug.Log(www.error);
                     LoadingLayer.Hide();
