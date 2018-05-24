@@ -15,9 +15,9 @@ public class AppConst
 
     public const string AppName = "UnityGameFramework";                             // 游戏名字
 
-    public const bool UpdateMode = true;                                           //更新模式-默认关闭 
+    public const bool UpdateMode = false;                                           //更新模式-默认关闭 
 
-    public const bool IsEmptyResBundle = true;                                     // 是否空的资源包
+    public const bool IsEmptyResBundle = false;                                     // 是否空的资源包
 
     public const string WebUrl = "http://45.76.76.36:3000/";                        //测试更新地址
 
