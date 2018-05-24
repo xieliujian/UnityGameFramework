@@ -34,16 +34,20 @@ public class AppPlatform
         {
             string assetdir = AppConst.AssetDir;
             string appname = AppConst.AppName.ToLower();
+
+            // 编辑器
             if (Application.isEditor)
             {
                 return "c:/" + appname + "/";
             }
 
+            // windows程序
             if (Application.platform == RuntimePlatform.WindowsPlayer)
             {
                 return Application.dataPath + "/" + assetdir + "/" + appname + "/";
             }
 
+            // mobile程序
             return Application.persistentDataPath + "/" + appname + "/";
         }
     }
@@ -60,8 +64,6 @@ public class AppPlatform
 
     public static string GetRelativePath()
     {
-        Debug.Log(DataPath);
-
         // 这里不能用 "file:///" 需要用 "file://", 不然在移动平台www无法读取资源
         // return "file:///" + DataPath;
         return "file://" + DataPath;
@@ -70,22 +72,19 @@ public class AppPlatform
     public static string GetCurPlatform()
     {
         string platformname = RuntimePlatform.WindowsPlayer.ToString().ToLower();
-        if (Application.platform == RuntimePlatform.WindowsPlayer || 
-            Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            platformname = RuntimePlatform.WindowsPlayer.ToString().ToLower();
-        }
-        else if (Application.platform == RuntimePlatform.Android)
-        {
-            platformname = RuntimePlatform.Android.ToString().ToLower();
-        }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer || 
-                 Application.platform == RuntimePlatform.OSXEditor ||
-                 Application.platform == RuntimePlatform.OSXPlayer)
-        {
-            platformname = RuntimePlatform.IPhonePlayer.ToString().ToLower();
-        }
 
+#if UNITY_ANDROID
+        platformname = RuntimePlatform.Android.ToString().ToLower();
+#endif
+
+#if UNITY_IOS
+        platformname = RuntimePlatform.IPhonePlayer.ToString().ToLower();
+#endif
+
+#if UNITY_STANDALONE_WIN
+        platformname = RuntimePlatform.WindowsPlayer.ToString().ToLower();
+#endif
+        
         return platformname;
     }
 
@@ -102,42 +101,32 @@ public class AppPlatform
 
     public static BuildTarget GetCurBuildTarget()
     {
-        if ( Application.platform == RuntimePlatform.WindowsEditor || 
-             Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-            return BuildTarget.StandaloneWindows;
-        }
-        else if ( Application.platform == RuntimePlatform.Android)
-        {
-            return BuildTarget.Android;
-        }
-        else if ( Application.platform == RuntimePlatform.OSXEditor ||
-                  Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            return BuildTarget.iOS;
-        }
+#if UNITY_ANDROID
+        return BuildTarget.Android;
+#endif
 
+#if UNITY_IOS
+        return BuildTarget.iOS;
+#endif
+
+#if UNITY_STANDALONE_WIN
         return BuildTarget.StandaloneWindows;
+#endif
     }
 
     public static BuildTargetGroup GetCurBuildTargetGroup()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor ||
-            Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-            return BuildTargetGroup.Standalone;
-        }
-        else if (Application.platform == RuntimePlatform.Android)
-        {
-            return BuildTargetGroup.Android;
-        }
-        else if (Application.platform == RuntimePlatform.OSXEditor ||
-                 Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            return BuildTargetGroup.iOS;
-        }
+#if UNITY_ANDROID
+        return BuildTargetGroup.Android;
+#endif
 
+#if UNITY_IOS
+        return BuildTargetGroup.iOS;
+#endif
+
+#if UNITY_STANDALONE_WIN
         return BuildTargetGroup.Standalone;
+#endif
     }
 
     public static string GetPackageResPath(BuildTarget target)
