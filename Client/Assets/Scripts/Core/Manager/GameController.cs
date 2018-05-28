@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         gameObject.AddComponent<ResourcesUpdateManager>();
         gameObject.AddComponent<ResourceManager>();
         gameObject.AddComponent<MsgManager>();
+        gameObject.AddComponent<LuaManager>();
 
         Gate.MsgMgr.Register();
 
