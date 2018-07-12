@@ -147,7 +147,7 @@ public class AppPlatform
 
         string assetdir = AppConst.AssetDir;
         string appname = AppConst.AppName.ToLower();
-        string respath = Application.dataPath + "/" + assetdir + "/" + platformpath + "/" + appname + "/";
+        string respath = Application.dataPath + "/../" + assetdir + "/" + platformpath + "/" + appname + "/";
         return respath;
     }
 
