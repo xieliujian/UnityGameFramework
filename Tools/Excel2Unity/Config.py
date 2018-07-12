@@ -1,7 +1,8 @@
 
 # --------------------------------Excel--------------------------------
 # Excel文件目录
-EXCEL_DIR = "./Excel"
+#EXCEL_DIR = "./Excel"
+EXCEL_DIR = "../../Resource/Excel"
 
 # excel文件的后缀
 EXCEL_EXT = ".xlsx"
@@ -25,11 +26,14 @@ UNITY_TABLE_ROOT_DIR = "../../Client/Assets/"
 
 # Unity数据目录
 #UNITY_TABLE_DATA_DIR = "UnityData/"
-UNITY_TABLE_DATA_DIR = "Art/Config/"
+UNITY_TABLE_DATA_DIR = "Art/"
 
 # Unity代码目录
 #UNITY_TABLE_CODE_DIR = "UnityCode/"
-UNITY_TABLE_CODE_DIR = "Scripts/Config/"
+UNITY_TABLE_CODE_DIR = "Scripts/"
+
+# Unity配置文件夹
+UNITY_TABLE_CONFIG_DIR = "Config/"
 
 # Unity解析文件目录
 UNITY_TABLE_PARSECODE_DIR = "./Parse/Unity/"
@@ -45,9 +49,6 @@ UNITY_CONFIGMANAGER_FILENAME = "ConfigManager"
 
 # Unity的Resources文件名
 UINTY_RESOURCE_PATH_NAME = "Resources/"
-
-# Unity的StreamingAssets的文件名
-UINTY_STREAMINGASSETS_PATH_NAME = "StreamingAssets/"
 
 # --------------------------------Server--------------------------------
 # 所有的服务器类型

@@ -5,7 +5,7 @@ from Config import UNITY_TABLE_DATA_DIR
 from Config import UNITY_TABLE_DATA_EXT
 from Config import UINTY_TABLE_USE_RESOURCE_PATH_READ
 from Config import UINTY_RESOURCE_PATH_NAME
-from Config import UINTY_STREAMINGASSETS_PATH_NAME
+from Config import UNITY_TABLE_CONFIG_DIR
 from Gen.DataGen import DataGen
 import os
 
@@ -21,7 +21,7 @@ class UnityDataGen(DataGen):
 		else:
 			rootpath = UNITY_TABLE_ROOT_DIR
 
-		path = rootpath + UNITY_TABLE_DATA_DIR + path
+		path = rootpath + UNITY_TABLE_DATA_DIR + UNITY_TABLE_CONFIG_DIR + path
 		path = os.path.splitext(path)[0]
 		path += UNITY_TABLE_DATA_EXT
 
