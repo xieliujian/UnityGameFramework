@@ -17,19 +17,19 @@ KEY_MODIFIER_NAME = "KEY"
 
 # --------------------------------Unity--------------------------------
 # Unity使用资源路径读取
-UINTY_TABLE_USE_RESOURCE_PATH_READ = True
+UINTY_TABLE_USE_RESOURCE_PATH_READ = False
 
 #Unity输出根目录
-#UNITY_TABLE_ROOT_DIR = "./"
-UNITY_TABLE_ROOT_DIR = "./TestTable/Assets/"
+#UNITY_TABLE_ROOT_DIR = "./TestTable/Assets/"
+UNITY_TABLE_ROOT_DIR = "../../Client/Assets/"
 
 # Unity数据目录
 #UNITY_TABLE_DATA_DIR = "UnityData/"
-UNITY_TABLE_DATA_DIR = "GameData/TableData/"
+UNITY_TABLE_DATA_DIR = "Art/Config/"
 
 # Unity代码目录
 #UNITY_TABLE_CODE_DIR = "UnityCode/"
-UNITY_TABLE_CODE_DIR = "Scripts/Table/"
+UNITY_TABLE_CODE_DIR = "Scripts/Config/"
 
 # Unity解析文件目录
 UNITY_TABLE_PARSECODE_DIR = "./Parse/Unity/"

@@ -131,7 +131,7 @@ class UnityCodeGen(CodeGen):
 		self.mFileContent += "		}\n"
 		self.mFileContent += "	}\n"
 
-		# 生成生成数据函数
+		# 生成数据函数
 		self.gen_gendatafunc(table, tablename, keylist)
 
 		self.mFileContent += "\n"
