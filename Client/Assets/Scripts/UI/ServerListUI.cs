@@ -9,12 +9,20 @@ public class ServerListUI : MonoBehaviour
 
     public GameObject mOk;
 
+    public UILabel mLabel;
+
 	// Use this for initialization
 	void Start ()
     {
         Instance = this;
         UIEventListener.Get(mOk).onClick = OnOkBtnClick;
-	}
+
+        HeroCfg herocfg = HeroCfgManager.Instance.GetDataByID(1);
+        if (herocfg != null)
+        {
+            mLabel.text = herocfg.Name + "  " + herocfg.AP_Name;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

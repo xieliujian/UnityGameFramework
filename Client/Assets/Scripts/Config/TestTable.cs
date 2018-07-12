@@ -44,7 +44,7 @@ public class TestTableCfgManager
 
 	public void InitTable()
 	{
-		string data = ConfigUtil.GetConfigData("Art/Config/TestTable.txt");
+		string data = ConfigUtil.GetConfigData("/TestTable.txt");
 		string[] splits = data.Split('\n');
 		foreach (string split in splits)
 		{

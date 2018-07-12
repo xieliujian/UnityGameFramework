@@ -44,7 +44,7 @@ public class ShipCfgManager
 
 	public void InitTable()
 	{
-		string data = ConfigUtil.GetConfigData("Art/Config/Ship/Ship.txt");
+		string data = ConfigUtil.GetConfigData("/Ship/Ship.txt");
 		string[] splits = data.Split('\n');
 		foreach (string split in splits)
 		{

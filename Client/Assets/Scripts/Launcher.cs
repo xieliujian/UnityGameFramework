@@ -61,6 +61,8 @@ public class Launcher : MonoBehaviour
 
     private void GameStart()
     {
+        ConfigManager.Load();
+
         UIGenerate.CreateUI("serverlist/serverlist", "serverlist", null);
     }
 

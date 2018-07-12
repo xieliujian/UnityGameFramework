@@ -4,7 +4,7 @@ using UnityEngine;
 using Util;
 using XLua;
 
-public class LuaManager : SingletonMonoBehaviour<MsgManager>
+public class LuaManager : SingletonMonoBehaviour<LuaManager>
 {
     #region 变量
 
@@ -32,7 +32,8 @@ public class LuaManager : SingletonMonoBehaviour<MsgManager>
 
     private void OnDestroy()
     {
-        mLuaEnv.Dispose();
+        if (mLuaEnv != null)
+            mLuaEnv.Dispose();
     }
 
     #endregion

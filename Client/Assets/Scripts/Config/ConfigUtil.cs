@@ -71,42 +71,16 @@ public class ConfigUtil
     #region 函数
 
     /// <summary>
-    /// 得到数据路径
-    /// </summary>
-    /// <returns></returns>
-    public static string GetConfigDataPath()
-    {
-        string path = "";
-
-#if UNITY_EDITOR
-        path = Application.dataPath;
-#else
-        //or sandbox dir.
-        path = Application.persistentDataPath;
-#endif
-
-        return path;
-    }
-
-    /// <summary>
     /// 得到配置数据
     /// </summary>
     /// <param name="path"></param>
-    /// <param name="userespath"></param>
     /// <returns></returns>
-    public static string GetConfigData(string path, bool userespath = true)
+    public static string GetConfigData(string path)
     {
         string data = "";
-        if (userespath)
-        {
-            data = Resources.Load(path).ToString();
-        }
-        else
-        {
-            path = GetConfigDataPath() + "/" + path;
-            StreamReader sr = new StreamReader(path, Encoding.UTF8);
-            data = sr.ReadToEnd();
-        }
+        path = AppPlatform.ConfigPath + "/" + path;
+        StreamReader sr = new StreamReader(path, Encoding.UTF8);
+        data = sr.ReadToEnd();
 
         return data;
     }

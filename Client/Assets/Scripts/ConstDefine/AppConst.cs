@@ -10,20 +10,24 @@ public class AppConst
 {
     public const int SocketPort = 3563;                                             // Socket服务器端口
 
-    //public const string SocketAddress = "127.0.0.1";                                // Socket服务器地址
-    public static string SocketAddress = "45.76.76.36";                           // Socket服务器地址
+    //public const string SocketAddress = "127.0.0.1";                              // Socket服务器地址
+    public static string SocketAddress = "45.76.76.36";                             // Socket服务器地址
 
     public const string AppName = "UnityGameFramework";                             // 游戏名字
 
-    public const bool UpdateMode = false;                                           //更新模式-默认关闭 
+    public const bool UpdateMode = false;                                           // 更新模式-默认关闭 
 
     public const bool IsEmptyResBundle = false;                                     // 是否空的资源包
 
-    public const string WebUrl = "http://45.76.76.36:3000/";                        //测试更新地址
+    public const string WebUrl = "http://45.76.76.36:3000/";                        // 测试更新地址
 
-    public const string ExtName = ".unity3d";                                       //素材扩展名
+    public const string ExtName = ".unity3d";                                       // 素材扩展名
 
-    public const string AssetDir = "AssetBundle";                                   //素材目录 
+    public const string AssetDir = "AssetBundle";                                   // 打包目录 
+
+    public const string ArtPath = "Art";                                            // 素材目录
+
+    public const string ConfigDirName = "Config";                                   // 配置文件夹名字
 }
 
 public class AppPlatform
@@ -49,6 +53,14 @@ public class AppPlatform
 
             // mobile程序
             return Application.persistentDataPath + "/" + appname + "/";
+        }
+    }
+
+    public static string ConfigPath
+    {
+        get
+        {
+            return DataPath + "/" + AppConst.ConfigDirName + "/";
         }
     }
 
@@ -151,5 +163,5 @@ public class AppPlatform
         return respath;
     }
 
-    #endif
+#endif
 }

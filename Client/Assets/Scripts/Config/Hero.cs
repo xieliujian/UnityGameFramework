@@ -44,7 +44,7 @@ public class HeroCfgManager
 
 	public void InitTable()
 	{
-		string data = ConfigUtil.GetConfigData("Art/Config/Hero.txt");
+		string data = ConfigUtil.GetConfigData("/Hero.txt");
 		string[] splits = data.Split('\n');
 		foreach (string split in splits)
 		{

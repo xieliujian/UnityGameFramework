@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using Util;
+using System.Diagnostics;
 
 public class Packager
 {
@@ -73,9 +74,13 @@ public class Packager
 
         // 3.
         BuildPipeline.BuildAssetBundles(resPath, BuildAssetBundleOptions.None, target);
-        
+
+        // 4.复制配置文件
+        CopyConfig(resPath);
+
+        // 5.
         BuildFileIndex(resPath);
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh();    
     }
 
     private static void SetAllAssetBundleName()
@@ -161,6 +166,16 @@ public class Packager
         {
             Recursive(dir, ref files);
         }
+    }
+
+    /// <summary>
+    /// 复制配置文件夹
+    /// </summary>
+    private static void CopyConfig(string resPath)
+    {
+        string sourcepath = Application.dataPath + "/" + AppConst.ArtPath + "/" + AppConst.ConfigDirName;
+        string dstpath = resPath + "/" + AppConst.ConfigDirName;
+        FileUtil.CopyFileOrDirectory(sourcepath, dstpath);
     }
 
     #endregion
