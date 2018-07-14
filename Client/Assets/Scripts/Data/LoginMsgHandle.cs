@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Net;
 using Msg;
+using UnityDebuger;
 
 public class LoginMsgHandle : BaseMsgHandle
 {
@@ -22,7 +23,7 @@ public class LoginMsgHandle : BaseMsgHandle
         if (msg == null)
             return;
 
-        Debug.Log("OnMsgNotifyConnect");
+        Debuger.Log("OnMsgNotifyConnect");
         ServerListUI.Instance.SetVisible(false);
         UIGenerate.CreateUI("testprotobuf3/testprotobuf3", "testprotobuf3", null);
     }

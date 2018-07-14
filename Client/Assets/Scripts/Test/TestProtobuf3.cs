@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Net;
 using Msg;
+using UnityDebuger;
 
 public class TestProtobuf3 : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class TestProtobuf3 : MonoBehaviour
         if (msg == null)
             return;
 
-        Debug.Log(msg.ToString());
+        Debuger.Log(msg.ToString());
         mShowInfo.text += msg.ToString();
         mShowInfo.text += "\n";
     }

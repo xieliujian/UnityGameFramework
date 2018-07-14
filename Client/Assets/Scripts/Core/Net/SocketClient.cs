@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Collections;
 using System.Collections.Generic;
 using Net;
+using UnityDebuger;
 
 public class SocketClient
 {
@@ -94,7 +95,7 @@ public class SocketClient
         catch (Exception e)
         {
             Close();
-            Debug.LogError(e.Message);
+            Debuger.LogError(e.Message);
         }
     }
 
@@ -127,7 +128,7 @@ public class SocketClient
             }
             else
             {
-                Debug.LogError("client.connected----->>false");
+                Debuger.LogError("client.connected----->>false");
             }
         }
     }
@@ -175,7 +176,7 @@ public class SocketClient
     /// </summary>
     void OnDisconnected(DisType dis, string msg)
     {
-        Debug.Log("OnDisconnected" + msg);
+        Debuger.Log("OnDisconnected" + msg);
         Close();   //关掉客户端链接
         NetManager.Instance.OnDisConnect();
     }
@@ -192,7 +193,7 @@ public class SocketClient
             returnStr += mByteBuffer[i].ToString("X2");
         }
 
-        Debug.LogError(returnStr);
+        Debuger.LogError(returnStr);
     }
 
     /// <summary>
@@ -206,7 +207,7 @@ public class SocketClient
         }
         catch (Exception ex)
         {
-            Debug.LogError("OnWrite--->>>" + ex.Message);
+            Debuger.LogError("OnWrite--->>>" + ex.Message);
         }
     }
 

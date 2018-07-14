@@ -4,6 +4,7 @@ using UnityEngine;
 using Util;
 using System;
 using System.IO;
+using UnityDebuger;
 
 public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateManager>
 {
@@ -65,7 +66,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         string url = AppConst.WebUrl + AppPlatform.GetCurPackageResPath();
         string listUrl = url + "files.txt";
 
-        Debug.Log("LoadUpdate---->>>" + listUrl);
+        Debuger.Log("LoadUpdate---->>>" + listUrl);
 
         WWW www = new WWW(listUrl);
         yield return www;
@@ -73,7 +74,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
         if (!string.IsNullOrEmpty(www.error))
         //if (www.error != null)
         {
-            Debug.Log(www.error);
+            Debuger.Log(www.error);
             LoadingLayer.Hide();
             yield break;
         }
@@ -117,9 +118,9 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
             }
 
             if (canUpdate)
-            {   
+            {
                 //本地缺少文件
-                Debug.Log(fileUrl);
+                Debuger.Log(fileUrl);
 
                 www = new WWW(fileUrl);
                 yield return www;
@@ -127,7 +128,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
                 if (!string.IsNullOrEmpty(www.error))
                  //   if (www.error != null)
                 {
-                    Debug.Log(www.error);
+                    Debuger.Log(www.error);
                     LoadingLayer.Hide();
                     yield break;
                 }
@@ -187,7 +188,7 @@ public class ResourcesUpdateManager : SingletonMonoBehaviour<ResourcesUpdateMana
             infile = streampath + fs[0];  //
             outfile = datapath + fs[0];
 
-            Debug.Log("正在解包文件:>" + infile);
+            Debuger.Log("正在解包文件:>" + infile);
             LoadingLayer.SetProgressbarValue(percent);
 
             string dir = Path.GetDirectoryName(outfile);

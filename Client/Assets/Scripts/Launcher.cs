@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityDebuger;
 using Util;
 using Net;
 
@@ -27,8 +28,18 @@ public class Launcher : MonoBehaviour
 
     private void Launch()
     {
+        InitDebuger();
         LaunchUIRoot();
         LaunchGameControl();
+    }
+
+    private void InitDebuger()
+    {
+        //初始化Debuger的日志开关
+        Debuger.Init(Application.persistentDataPath + "/DebugerLog/", new UnityDebugerConsole());
+        Debuger.EnableLog = true;
+        Debuger.EnableSave = false;
+        Debuger.Log();
     }
 
     private void LaunchUIRoot()

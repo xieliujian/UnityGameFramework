@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using UnityDebuger;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -85,7 +86,7 @@ namespace Util
             int resultId = CheckRuntimeFile();
             if (resultId == -1)
             {
-                Debug.LogError("没有找到框架所需要的资源，单击Game菜单下Build xxx Resource生成！！");
+                Debuger.LogError("没有找到框架所需要的资源，单击Game菜单下Build xxx Resource生成！！");
                 EditorApplication.isPlaying = false;
                 return false;
             }

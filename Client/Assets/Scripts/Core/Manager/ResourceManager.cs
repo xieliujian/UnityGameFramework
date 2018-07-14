@@ -4,6 +4,7 @@ using UnityEngine;
 using Util;
 using UObject = UnityEngine.Object;
 using System;
+using UnityDebuger;
 
 public class AssetBundleInfo
 {
@@ -114,7 +115,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
             }
         }
 
-        Debug.LogError("GetRealAssetPath Error:>>" + abName);
+        Debuger.LogError("GetRealAssetPath Error:>>" + abName);
         return null;
     }
 
@@ -155,7 +156,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
             if (bundleInfo == null)
             {
                 m_LoadRequests.Remove(abName);
-                Debug.LogError("OnLoadAsset--->>>" + abName);
+                Debuger.LogError("OnLoadAsset--->>>" + abName);
                 yield break;
             }
         }
@@ -267,10 +268,10 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
     public void UnloadAssetBundle(string abName, bool isThorough = false)
     {
         abName = GetRealAssetPath(abName);
-        Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
+        Debuger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
         UnloadAssetBundleInternal(abName, isThorough);
         UnloadDependencies(abName, isThorough);
-        Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
+        Debuger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
     }
 
     void UnloadDependencies(string abName, bool isThorough)
@@ -302,7 +303,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
 
             bundle.m_AssetBundle.Unload(isThorough);
             m_LoadedAssetBundles.Remove(abName);
-            Debug.Log(abName + " has been unloaded successfully");
+            Debuger.Log(abName + " has been unloaded successfully");
         }
     }
 

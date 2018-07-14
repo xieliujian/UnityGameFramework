@@ -5,6 +5,7 @@ using System;
 using Proto;
 using System.IO;
 using Google.Protobuf;
+using UnityDebuger;
 
 namespace Net
 {
@@ -108,7 +109,7 @@ namespace Net
 
             if (!ProtoDic.ContainProtoType(obj.GetType()))
             {
-                Debug.LogError("不存协议类型");
+                Debuger.LogError("不存协议类型");
                 return;
             }
 
@@ -135,7 +136,7 @@ namespace Net
         /// </summary>
         public void OnConnect()
         {
-            Debug.Log("======连接========");
+            Debuger.Log("======连接========");
         }
 
         /// <summary>
@@ -143,7 +144,7 @@ namespace Net
         /// </summary>
         public void OnDisConnect()
         {
-            Debug.Log("======断开连接========");
+            Debuger.Log("======断开连接========");
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace Net
         {
             if (!ProtoDic.ContainProtoId(protoId))
             {
-                Debug.LogError("未知协议号");
+                Debuger.LogError("未知协议号");
                 return;
             }
 
@@ -168,7 +169,7 @@ namespace Net
             }
             catch
             {
-                Debug.Log("DispatchProto Error:" + protoType.ToString());
+                Debuger.Log("DispatchProto Error:" + protoType.ToString());
             }
         }
 
