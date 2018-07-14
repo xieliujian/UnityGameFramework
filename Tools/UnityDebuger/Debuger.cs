@@ -1,29 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////
-//                            _ooOoo_                             //
-//                           o8888888o                            //
-//                           88" . "88                            //
-//                           (| ^_^ |)                            //
-//                           O\  =  /O                            //
-//                        ____/`---'\____                         //
-//                      .'  \\|     |//  `.                       //
-//                     /  \\|||  :  |||//  \                      //
-//                    /  _||||| -:- |||||-  \                     //
-//                    |   | \\\  -  /// |   |                     //
-//                    | \_|  ''\---/''  |   |                     //
-//                    \  .-\__  `-`  ___/-. /                     //
-//                  ___`. .'  /--.--\  `. . ___                   //
-//                ."" '<  `.___\_<|>_/___.'  >'"".                //
-//              | | :  `- \`.;`\ _ /`;.`/ - ` : | |               //
-//              \  \ `-.   \_ __\ /__ _/   .-` /  /               //
-//        ========`-.____`-.___\_____/___.-`____.-'========       //
-//                             `=---='                            //
-//        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^      //
-//            佛祖保佑       无BUG        不修改                   //
-////////////////////////////////////////////////////////////////////
-/*
- * 描述：
- * 作者：slicol
-*/
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,53 +6,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace UnityDebuger
 {
-    public interface IDebugerConsole
-    {
-        void Log(string msg, object context = null);
-        void LogWarning(string msg, object context = null);
-        void LogError(string msg, object context = null);
-    }
-
-    public class UnityDebugerConsole : IDebugerConsole
-    {
-        private object[] m_tmpArgs = new[] { "" };
-        private MethodInfo m_miLog;
-        private MethodInfo m_miLogWarning;
-        private MethodInfo m_miLogError;
-
-        public UnityDebugerConsole()
-        {
-            Type type = Type.GetType("UnityEngine.Debug, UnityEngine");
-            m_miLog = type.GetMethod("Log", new Type[] { typeof(object) });
-            m_miLogWarning = type.GetMethod("LogWarning", new Type[] { typeof(object) });
-            m_miLogError = type.GetMethod("LogError", new Type[] { typeof(object) });
-
-        }
-
-        public void Log(string msg, object context = null)
-        {
-            m_tmpArgs[0] = msg;
-            m_miLog.Invoke(null, m_tmpArgs);
-        }
-
-        public void LogWarning(string msg, object context = null)
-        {
-            m_tmpArgs[0] = msg;
-            m_miLogWarning.Invoke(null, m_tmpArgs);
-        }
-
-        public void LogError(string msg, object context = null)
-        {
-            m_tmpArgs[0] = msg;
-            m_miLogError.Invoke(null, m_tmpArgs);
-        }
-    }
-
-
     public interface ILogTag
     {
         string LOG_TAG { get; }
@@ -93,12 +24,10 @@ namespace UnityDebuger
         public static string LogFileName = "";
         public static string Prefix = "> ";
         public static StreamWriter LogFileWriter = null;
-        private static IDebugerConsole m_console;
 
-        public static void Init(string logFileDir = null, IDebugerConsole console = null)
+        public static void Init(string logFileDir = null)
         {
             LogFileDir = logFileDir;
-            m_console = console;
             if (string.IsNullOrEmpty(LogFileDir))
             {
                 string path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -131,19 +60,6 @@ namespace UnityDebuger
             }
 
             UnityEngine.Debug.Log(msg);
-
-            //if (m_console != null)
-            //{
-            //    m_console.Log(msg, context);
-            //}
-            //else
-            //{
-            //    var old = Console.ForegroundColor;
-            //    Console.ForegroundColor = ConsoleColor.White;
-            //    Console.WriteLine(msg);
-            //    Console.ForegroundColor = old;
-            //}
-
             LogToFile("[I]" + msg);
         }
 
@@ -157,18 +73,6 @@ namespace UnityDebuger
 
             UnityEngine.Debug.LogWarning(msg);
 
-            //if (m_console != null)
-            //{
-            //    m_console.LogWarning(msg, context);
-            //}
-            //else
-            //{
-            //    var old = Console.ForegroundColor;
-            //    Console.ForegroundColor = ConsoleColor.Yellow;
-            //    Console.WriteLine(msg);
-            //    Console.ForegroundColor = old;
-            //}
-
             LogToFile("[W]" + msg);
         }
 
@@ -181,23 +85,8 @@ namespace UnityDebuger
             }
 
             UnityEngine.Debug.LogError(msg);
-
-            //if (m_console != null)
-            //{
-            //    m_console.LogError(msg, context);
-            //}
-            //else
-            //{
-            //    var old = Console.ForegroundColor;
-            //    Console.ForegroundColor = ConsoleColor.Red;
-            //    Console.WriteLine(msg);
-            //    Console.ForegroundColor = old;          
-            //}
-
             LogToFile("[E]" + msg, true);
         }
-
-
 
         //----------------------------------------------------------------------
         //Log
@@ -260,11 +149,8 @@ namespace UnityDebuger
             }
 
             string message = GetLogText(GetLogTag(obj), GetLogCaller(), string.Format(format, args));
-            Internal_Log(Prefix + message);
-            
+            Internal_Log(Prefix + message);     
         }
-
-
 
         //----------------------------------------------------------------------
         //LogWarning
@@ -284,24 +170,19 @@ namespace UnityDebuger
         public static void LogWarning(string format, params object[] args)
         {
             string message = GetLogText(GetLogCaller(true), string.Format(format, args));
-            Internal_LogWarning(Prefix + message);
-            
+            Internal_LogWarning(Prefix + message);          
         }
-
 
         public static void LogWarning(this ILogTag obj, string message)
         {
             message = GetLogText(GetLogTag(obj), GetLogCaller(), message);
-            Internal_LogWarning(Prefix + message);
-            
+            Internal_LogWarning(Prefix + message);        
         }
-
 
         public static void LogWarning(this ILogTag obj, string format, params object[] args)
         {
             string message = GetLogText(GetLogTag(obj), GetLogCaller(), string.Format(format, args));
-            Internal_LogWarning(Prefix + message);
-            
+            Internal_LogWarning(Prefix + message);           
         }
 
         //----------------------------------------------------------------------
@@ -311,37 +192,30 @@ namespace UnityDebuger
         {
             string message = GetLogText(GetLogCaller(true), obj);
             Internal_LogError(Prefix + message);
-
         }
 
         public static void LogError(string message)
         {
             message = GetLogText(GetLogCaller(true), message);
-            Internal_LogError(Prefix + message);
-            
+            Internal_LogError(Prefix + message);           
         }
 
         public static void LogError(string format, params object[] args)
         {
             string message = GetLogText(GetLogCaller(true), string.Format(format, args));
-            Internal_LogError(Prefix + message);
-            
+            Internal_LogError(Prefix + message);          
         }
-
 
         public static void LogError(this ILogTag obj, string message)
         {
             message = GetLogText(GetLogTag(obj), GetLogCaller(), message);
-            Internal_LogError(Prefix + message);
-            
+            Internal_LogError(Prefix + message);      
         }
-
 
         public static void LogError(this ILogTag obj, string format, params object[] args)
         {
             string message = GetLogText(GetLogTag(obj), GetLogCaller(), string.Format(format, args));
-            Internal_LogError(Prefix + message);
-            
+            Internal_LogError(Prefix + message);         
         }
 
         //----------------------------------------------------------------------
@@ -352,7 +226,6 @@ namespace UnityDebuger
         {
             return tag + "::" + methodName + "() " + message;
         }
-
 
         private static string GetLogText(string caller, string message)
         {
@@ -397,7 +270,6 @@ namespace UnityDebuger
             return s;
         }
 
-
         /// <summary>
         /// 将容器序列化成字符串
         /// </summary>
@@ -422,7 +294,6 @@ namespace UnityDebuger
         }
 
         #endregion 
-
 
         private static string GetLogTag(ILogTag obj)
         {
@@ -476,7 +347,6 @@ namespace UnityDebuger
             return "";
         }
 
-
         //----------------------------------------------------------------------
         internal static string CheckLogFileDir()
         {
@@ -501,8 +371,6 @@ namespace UnityDebuger
 
             return LogFileDir;
         }
-
-
 
         internal static string GenLogFileName()
         {
