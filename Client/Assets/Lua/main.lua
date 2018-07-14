@@ -1,5 +1,7 @@
 
 
+local Debuger = UnityDebuger.Debuger
+
 function main()
-    UnityEngine.Debug.Log("111")
+    Debuger.Log("111")
 end
