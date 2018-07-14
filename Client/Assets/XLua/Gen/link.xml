@@ -2,6 +2,11 @@
 
 <linker>
 
+	<assembly fullname="UnityDebuger">
+	    <type fullname="UnityDebuger.Debuger" preserve="all"/>
+		
+	</assembly>
+
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="LuaBehaviour" preserve="all"/>
 		<type fullname="XLuaTest.Pedding" preserve="all"/>

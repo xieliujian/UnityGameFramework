@@ -21,6 +21,8 @@ namespace XLua.CSObjectWrap
         {
 		    XLua.LuaEnv.AddIniter((luaenv, translator) => {
 			    
+				translator.DelayWrapLoader(typeof(UnityDebuger.Debuger), UnityDebugerDebugerWrap.__Register);
+				
 				translator.DelayWrapLoader(typeof(LuaBehaviour), LuaBehaviourWrap.__Register);
 				
 				translator.DelayWrapLoader(typeof(XLuaTest.Pedding), XLuaTestPeddingWrap.__Register);

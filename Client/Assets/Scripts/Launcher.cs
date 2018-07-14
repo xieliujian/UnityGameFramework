@@ -13,8 +13,8 @@ public class Launcher : MonoBehaviour
     void Start ()
     {
         DestroyObject(gameObject);
-        Launch();
-	}
+        Launch();        
+    }
 	
 	// Update is called once per frame
 	void Update ()
