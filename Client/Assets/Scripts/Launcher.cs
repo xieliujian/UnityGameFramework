@@ -36,7 +36,7 @@ public class Launcher : MonoBehaviour
     private void InitDebuger()
     {
         //初始化Debuger的日志开关
-        Debuger.Init(Application.persistentDataPath + "/DebugerLog/", new UnityDebugerConsole());
+        Debuger.Init(Application.persistentDataPath + "/DebugerLog/");
         Debuger.EnableLog = true;
         Debuger.EnableSave = false;
         Debuger.Log();
