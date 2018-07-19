@@ -1,6 +1,6 @@
 
 
-local Debuger = CS.UnityDebuger.Debuger
+Debuger = CS.UnityDebuger.Debuger
 
 function main()
     Debuger.Log("111")
