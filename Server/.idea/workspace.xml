@@ -14,8 +14,8 @@
       <file leaf-file-name="chanrpc.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/server/login/internal/chanrpc.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="580">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -87,6 +87,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -94,16 +95,10 @@
               <item name="Server" type="b2602c69:ProjectViewProjectNode" />
               <item name="Server" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -167,7 +162,7 @@
     </list>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1134" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21458334" />
@@ -176,7 +171,7 @@
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33434343" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33333334" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -554,8 +549,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/server/login/internal/chanrpc.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="580">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
