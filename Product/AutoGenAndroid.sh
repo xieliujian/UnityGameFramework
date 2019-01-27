@@ -2,8 +2,8 @@
 
 echo Set Path Param
 
-UnityPath="/Applications/Unity/Unity.app/Contents/MacOS/Unity"
-SvnPath="/Users/xieliujian/Desktop/xieliujian/unity/UnityGameFramework"
+UnityPath="/Applications/Unity2017.1/Unity2017.1.app/Contents/MacOS/Unity"
+SvnPath="/Users/xieliujian/Desktop/xieliujian/unity/UnityGameFramework/trunk"
 SvnClientPath="/Users/xieliujian/Desktop/xieliujian/unity/UnityGameFramework/trunk/Client"
 
 echo Step 1 : Update svn
