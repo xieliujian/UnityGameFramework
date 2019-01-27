@@ -115,7 +115,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+    <property name="settings.editor.selected.configurable" value="goland.project.structure" />
     <property name="settings.editor.splitter.proportion" value="0.29566562" />
   </component>
   <component name="RunDashboard">

@@ -74,6 +74,8 @@ public class Launcher : MonoBehaviour
     {
         ConfigManager.Load();
 
+        Gate.LuaMgr.Exec("main.lua");
+
         UIGenerate.CreateUI("serverlist/serverlist", "serverlist", null);
     }
 

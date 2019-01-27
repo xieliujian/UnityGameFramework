@@ -9,6 +9,15 @@ using System.Diagnostics;
 
 public class Packager
 {
+    #region 枚举
+
+    public enum EAndroidBuildPlatform
+    {
+        NoPlatform,
+    }
+
+    #endregion
+
     #region 菜单
 
     [MenuItem("UnityGameFramework/Build iPhone Resource", false, 100)]
@@ -41,11 +50,12 @@ public class Packager
         EditorUserBuildSettings.SwitchActiveBuildTarget(curtargetgroup, curtarget);
     }
 
-    #endregion
-
-    #region 变量
-
-
+    public static void BuildAndroidNoPlatform()
+    {
+        string path = GetAndroidBuildPath(EAndroidBuildPlatform.NoPlatform);
+        List<string> scenes = GetAllScenes();
+        BuildPipeline.BuildPlayer(scenes.ToArray(), path, BuildTarget.Android, BuildOptions.None);
+    }
 
     #endregion
 
@@ -77,6 +87,7 @@ public class Packager
 
         // 4.复制配置文件
         CopyConfig(resPath);
+        CopyLua(resPath);
 
         // 5.
         BuildFileIndex(resPath);
@@ -176,6 +187,52 @@ public class Packager
         string sourcepath = Application.dataPath + "/" + AppConst.ArtPath + "/" + AppConst.ConfigDirName;
         string dstpath = resPath + "/" + AppConst.ConfigDirName;
         FileUtil.CopyFileOrDirectory(sourcepath, dstpath);
+    }
+
+    /// <summary>
+    /// 复制lua文件
+    /// </summary>
+    /// <param name="resPath"></param>
+    private static void CopyLua(string resPath)
+    {
+        string sourcepath = Application.dataPath + "/" + AppConst.LuaDirName;
+        string dstpath = resPath + "/" + AppConst.LuaDirName;
+        FileUtil.CopyFileOrDirectory(sourcepath, dstpath);
+    }
+
+    /// <summary>
+    /// 获取所有的场景
+    /// </summary>
+    /// <returns></returns>
+    private static List<string> GetAllScenes()
+    {
+        List<string> scenes = new List<string>();
+        scenes.Clear();
+        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (!scene.enabled)
+                continue;
+
+            scenes.Add(scene.path);
+        }
+
+        return scenes;
+    }
+
+    /// <summary>
+    /// 获取android建造路径
+    /// </summary>
+    /// <param name="platform"></param>
+    /// <returns></returns>
+    private static string GetAndroidBuildPath(EAndroidBuildPlatform platform)
+    {
+        string prefix = "../Product/";
+        if (platform == EAndroidBuildPlatform.NoPlatform)
+        {
+            return string.Format("{0}{1}.apk", prefix, AppConst.AppName);
+        }
+
+        return "";
     }
 
     #endregion

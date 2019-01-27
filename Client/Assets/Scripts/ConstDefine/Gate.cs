@@ -29,6 +29,14 @@ public static class Gate
         }
     }
 
+    public static LuaManager LuaMgr
+    {
+        get
+        {
+            return LuaManager.Instance;
+        }
+    }
+
     public static Transform GUIRoot
     {
         get

@@ -28,6 +28,8 @@ public class AppConst
     public const string ArtPath = "Art";                                            // 素材目录
 
     public const string ConfigDirName = "Config";                                   // 配置文件夹名字
+
+    public const string LuaDirName = "Lua";                                         // lua目录名
 }
 
 public class AppPlatform
@@ -61,6 +63,19 @@ public class AppPlatform
         get
         {
             return DataPath + "/" + AppConst.ConfigDirName + "/";
+        }
+    }
+
+    public static string LuaPath
+    {
+        get
+        {
+            if (Application.isEditor)
+            {
+                return Application.dataPath + "/" + AppConst.LuaDirName + "/";
+            }
+
+            return DataPath + "/" + AppConst.LuaDirName + "/";
         }
     }
 
@@ -124,6 +139,8 @@ public class AppPlatform
 #if UNITY_STANDALONE_WIN
         return BuildTarget.StandaloneWindows;
 #endif
+
+        return BuildTarget.Android;
     }
 
     public static BuildTargetGroup GetCurBuildTargetGroup()
@@ -139,6 +156,8 @@ public class AppPlatform
 #if UNITY_STANDALONE_WIN
         return BuildTargetGroup.Standalone;
 #endif
+
+        return BuildTargetGroup.Android;
     }
 
     public static string GetPackageResPath(BuildTarget target)

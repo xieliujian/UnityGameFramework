@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Util;
 using XLua;
+using System;
+using System.IO;
 
 public class LuaManager : SingletonMonoBehaviour<LuaManager>
 {
@@ -34,6 +36,41 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>
     {
         if (mLuaEnv != null)
             mLuaEnv.Dispose();
+    }
+
+    public LuaTable NewLuaTable()
+    {
+        LuaTable luatable = mLuaEnv.NewTable();
+        LuaTable meta = mLuaEnv.NewTable();
+        meta.Set("__index", mLuaEnv.Global);
+        luatable.SetMetaTable(meta);
+        meta.Dispose();
+        luatable.Set("self", this);
+
+        return luatable;
+    }
+
+    public string GetLuaString(string luafile)
+    {
+        string file = AppPlatform.LuaPath + luafile;
+        FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+        StreamReader sr = new StreamReader(fileStream);
+        string data = sr.ReadToEnd();
+        return data;
+    }
+
+    public void Exec(string luafile)
+    {
+        LuaTable luatable = NewLuaTable();
+        string luadata = GetLuaString(luafile);
+        mLuaEnv.DoString(luadata, "main", luatable);
+
+        Action func;
+        luatable.Get("main", out func);
+        if (func != null)
+        {
+            func();
+        }
     }
 
     #endregion
